@@ -9,10 +9,10 @@
 </head>
 <body class="bg-gray-50" style="font-family: 'Inter', sans-serif;">
     <header class="flex bg-blue-600 text-white shadow pt-6 pb-6 justify-center">
-        <div class="max-w-7xl w-full px-6 flex justify-between">
+        <div class="max-w-7xl w-full px-2 flex justify-between sm:px-6">
             <!-- Logo and title -->
             <div class="flex items-center gap-2">
-                <img src="assets/logo.svg" alt="Amanzi Warden logo" class="mask-alpha drop-shadow-lg w-14 h-14"></object>
+                <img src="assets/logo.svg" alt="Amanzi Warden logo" class="mask-alpha drop-shadow-lg w-10 h-10 sm:w-14 sm:h-14">
                 <div>
                     <h1 class="text-2xl font-bold drop-shadow-lg">Amanzi Warden</h1>
                     <p class="text-sm text-blue-100 drop-shadow-lg">Smart Water Monitoring System</p>
@@ -23,20 +23,20 @@
             <div class="flex items-center gap-8">
                 <!-- Online status -->
                 <div class="flex items-center gap-2">
-                    <img id="header-status-icon" src="assets/status-online.svg" alt="Online icon" class="w-5 h-5"></object>
+                    <img id="header-status-icon" src="assets/status-online.svg" alt="Online icon" class="w-5 h-5">
                     <p id="header-status-text" class="text-sm text-blue-100 drop-shadow-lg">Online</p>
                 </div>
 
                 <!-- Last updated -->
                 <div class="flex items-center gap-2">
-                    <img src="assets/clock-icon.svg" alt="Clock icon" class="w-5 h-5"></object>
+                    <img src="assets/clock-icon.svg" alt="Clock icon" class="w-5 h-5">
                     <p id="header-last-updated"class="text-sm text-blue-100 drop-shadow-lg">Last updated: Just now</p>
                 </div>
             </div>
         </div>
     </header>
     <main class="flex pt-6 pb-6 justify-center">
-        <div class="max-w-7xl w-full px-6">
+        <div class="max-w-7xl w-full px-2 sm:px-6">
             <!-- Alerts -->
             <section class="w-full mb-6">
                 <div class="flex items-center gap-3 p-3 w-full bg-green-50 border-solid border-2 border-green-600 rounded-lg">
@@ -44,6 +44,49 @@
                     <p class="text-green-800"><b>No Alerts:</b> All nodes reporting operational.</p>
                 </div>
             </section>
+            <!-- Node KPIs -->
+            <section class="w-full mb-6 gap-6 flex flex-col sm:flex-row">
+                <!-- Total nodes -->
+                <div class="flex flex-col gap-3 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+                    <div class="flex justify-between items-center w-full">
+                        <p class="font-medium">Total Nodes</p>
+                        <img src="assets/logo.svg" alt="Amanzi Warden logo" class="w-8 h-8 invert">
+                    </div>
+                    <p id="nodes-total" class="text-3xl font-bold mt-2 mb-2">0</p>
+                </div>
+                <!-- Normal nodes -->
+                <div class="flex flex-col gap-3 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+                    <div class="flex justify-between items-center w-full">
+                        <p class="font-medium">Normal Nodes</p>
+                        <svg class="w-4 h-4 text-green-500" fill="currentColor">
+                            <circle cx="8" cy="8" r="8"/>
+                        </svg>
+                    </div>
+                    <p id="nodes-normal" class="text-3xl font-bold mt-2 mb-2">0</p>
+                </div>
+                <!-- Potential issues nodes -->
+                <div class="flex flex-col gap-3 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+                    <div class="flex justify-between items-center w-full">
+                        <p class="font-medium">Potential Issues</p>
+                        <svg class="w-4 h-4 text-orange-500" fill="currentColor">
+                            <circle cx="8" cy="8" r="8"/>
+                        </svg>
+                    </div>
+                    <p id="nodes-potential-issues" class="text-3xl font-bold mt-2 mb-2">0</p>
+                </div>
+                <!-- Critical nodes -->
+                <div class="flex flex-col gap-3 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+                    <div class="flex justify-between items-center w-full">
+                        <p class="font-medium">Critical</p>
+                        <svg class="w-4 h-4 text-red-500" fill="currentColor">
+                            <circle cx="8" cy="8" r="8"/>
+                        </svg>
+                    </div>
+                    <p id="nodes-critical" class="text-3xl font-bold mt-2 mb-2">0</p>
+                </div>
+            </section>
+            <!-- Monitor controls -->
+            <!-- Node status table -->
         </div>
     </main>
 </body>
