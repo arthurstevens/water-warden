@@ -9,10 +9,10 @@
 </head>
 <body class="bg-gray-50" style="font-family: 'Inter', sans-serif;">
     <header class="flex bg-blue-600 text-white shadow pt-6 pb-6 justify-center">
-        <div class="max-w-7xl w-full px-6 flex">
+        <div class="max-w-7xl w-full px-6 flex justify-between">
             <!-- Logo and title -->
             <div class="flex items-center gap-2">
-                <img src="assets/logo.svg" alt="Amanzi Warden logo" class="drop-shadow-lg w-14 h-14"></object>
+                <img src="assets/logo.svg" alt="Amanzi Warden logo" class="mask-alpha drop-shadow-lg w-14 h-14"></object>
                 <div>
                     <h1 class="text-2xl font-bold drop-shadow-lg">Amanzi Warden</h1>
                     <p class="text-sm text-blue-100 drop-shadow-lg">Smart Water Monitoring System</p>
@@ -20,10 +20,10 @@
             </div>
 
             <!-- Status info -->
-            <div class="flex items-center gap-8 ml-auto">
+            <div class="flex items-center gap-8">
                 <!-- Online status -->
                 <div class="flex items-center gap-2">
-                    <img id="header-status-icon" src="assets/status-online.svg" alt="Wifi icon" class="w-5 h-5"></object>
+                    <img id="header-status-icon" src="assets/status-online.svg" alt="Online icon" class="w-5 h-5"></object>
                     <p id="header-status-text" class="text-sm text-blue-100 drop-shadow-lg">Online</p>
                 </div>
 
@@ -35,5 +35,16 @@
             </div>
         </div>
     </header>
+    <main class="flex pt-6 pb-6 justify-center">
+        <div class="max-w-7xl w-full px-6">
+            <!-- Alerts -->
+            <section class="w-full mb-6">
+                <div class="flex items-center gap-3 p-3 w-full bg-green-50 border-solid border-2 border-green-600 rounded-lg">
+                    <img src="assets/status-ok-icon.svg" alt="Positive status icon" class="w-5 h-5">
+                    <p class="text-green-800"><b>No Alerts:</b> All nodes reporting operational.</p>
+                </div>
+            </section>
+        </div>
+    </main>
 </body>
 </html>
