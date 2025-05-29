@@ -94,13 +94,45 @@
                         <img src="assets/filter-icon.svg" alt="Filter icon" class="w-5 h-5">
                         <input id="node-filter" name="node-filter" type="text" placeholder="Filter by Node ID" class="border-solid border-2 border-gray-300 rounded-md pl-3 p-1 font-normal text-md w-full">
                     </div>
-                    <button class="flex items-center justify-center gap-3 w-full sm:w-auto border-2 border-gray-300 rounded-md px-4 py-1 font-medium text-md">
+                    <button id="export-csv-button" class="flex items-center justify-center gap-3 w-full sm:w-auto border-2 border-gray-300 rounded-md px-4 py-1 font-medium text-md">
                         <img src="assets/download-icon.svg" class="w-5 h-5">
                         Export to CSV
                     </button>
                 </div>
             </section>
             <!-- Node status table -->
+            <section class="flex flex-col mb-6 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+                <h1 class="text-2xl font-semibold">Node Status</h1>
+                <p class="text-sm font-normal text-gray-500">Real-time monitoring of water flow sensors</p>
+                <section class="w-full overflow-x-auto overflow-y-auto max-h-[400px] rounded-lg mt-7 mb-4">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
+                        <thead class="sticky top-0 z-10 bg-gray-100 text-gray-600 uppercase tracking-wider">
+                            <tr>
+                                <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Node ID</th>
+                                <th class="px-6 py-3 whitespace-nowrap min-w-[160px]">Name</th>
+                                <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Status</th>
+                                <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Flow Rate</th>
+                                <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Pressure</th>
+                                <th class="px-6 py-3 whitespace-nowrap min-w-[180px]">Coordiantes</th>
+                                <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Last Reported</th>
+                                <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Battery</th>
+                            </tr>
+                        </thead>
+                        <tbody id="node-table-body" class="divide-y divide-gray-300">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 text-gray-700 font-medium">M-001</td>
+                                <td class="px-6 py-4 text-gray-700">Main Pump</td>
+                                <td class="px-6 py-4 text-green-600 font-semibold">Online</td>
+                                <td class="px-6 py-4 text-gray-700">12.5 L/min</td>
+                                <td class="px-6 py-4 text-gray-700">3.4 bar</td>
+                                <td class="px-6 py-4 text-gray-700">-26.20401, 28.04767</td>
+                                <td class="px-6 py-4 text-gray-700">2 mins ago</td>
+                                <td class="px-6 py-4 text-yellow-600 font-medium">45%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </section>
         </div>
     </main>
 </body>
