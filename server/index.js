@@ -9,26 +9,13 @@ app.set('views', path.join(__dirname, '../client/views'));
 
 app.use(express.static(path.join(__dirname, '../client/public')));
 
+
 app.get('/', (req, res) => {
     res.render('index', {
         title: 'Amanzi Warden',
         header: {
             title: 'Amanzi Warden',
-            subtitle: 'Smart Water Monitoring System',
-            statusText: {
-                network: 'Pending',
-                lastUpdated: 'Pending'
-            }
-        },
-        alert: {
-            title: 'Pending:',
-            description: 'Awaiting response from server.'
-        },
-        kpiNodeCounts: {
-            total: '-',
-            normal: '-',
-            potentialIssues: '-',
-            critical: '-'
+            subtitle: 'Smart Water Monitoring System'
         },
         footer: {
             text: 'All rights reserved.',
@@ -39,7 +26,9 @@ app.get('/', (req, res) => {
     });
 });
 
-const PORT = process.env.PORT || 5000;
+app.use((req, res) => res.status(404).send('Page not found.'));
+
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
