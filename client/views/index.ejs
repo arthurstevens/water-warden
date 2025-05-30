@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= title %></title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -119,7 +119,7 @@
             <thead class="sticky top-0 z-10 bg-gray-100 text-gray-600 uppercase tracking-wider">
               <tr>
                 <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Node ID</th>
-                <th class="px-6 py-3 whitespace-nowrap min-w-[160px]">Name</th>
+                <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Name</th>
                 <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Status</th>
                 <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Flow Rate</th>
                 <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Pressure</th>
@@ -130,14 +130,9 @@
             </thead>
             <tbody id="node-table-body" class="divide-y divide-gray-300">
               <tr class="hover:bg-gray-50">
-                <td class="px-6 py-4 text-gray-700 font-medium">M-001</td>
-                <td class="px-6 py-4 text-gray-700">Main Pump</td>
-                <td class="px-6 py-4 text-green-600 font-semibold">Online</td>
-                <td class="px-6 py-4 text-gray-700">12.5 L/min</td>
-                <td class="px-6 py-4 text-gray-700">3.4 bar</td>
-                <td class="px-6 py-4 text-gray-700">-26.20401, 28.04767</td>
-                <td class="px-6 py-4 text-gray-700">2 mins ago</td>
-                <td class="px-6 py-4 text-yellow-600 font-medium">45%</td>
+                <% for (let i = 0; i < 8; i++) { %>
+                  <td class="px-6 py-4 text-gray-700 font-semibold">-</td>
+                <% } %>
               </tr>
             </tbody>
           </table>
