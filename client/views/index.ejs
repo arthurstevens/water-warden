@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50" style="font-family: 'Inter', sans-serif;">
+  <header class="flex bg-blue-600 text-white shadow pt-6 pb-6 justify-center">
+    <div class="max-w-7xl w-full px-2 flex justify-between sm:px-6">
+      <!-- Logo and title -->
+      <div class="flex items-center gap-2">
+        <img src="assets/logo.svg" alt="Amanzi Warden logo" class="mask-alpha drop-shadow-lg w-10 h-10 sm:w-14 sm:h-14">
+        <div>
+          <h1 class="text-2xl font-bold drop-shadow-lg"><%= header.title %></h1>
+          <p class="text-sm text-blue-100 drop-shadow-lg"><%= header.subtitle %></p>
+        </div>
+      </div>
+
+      <!-- Status info -->
+      <div class="flex items-center gap-8">
+        <!-- Online status -->
+        <div class="flex items-center gap-2">
+          <img id="header-status-icon" src="assets/status-online.svg" alt="Online icon" class="w-5 h-5">
+          <p id="header-status-text" class="text-sm text-blue-100 drop-shadow-lg">Pending</p>
+        </div>
+
+        <!-- Last updated -->
+        <div class="flex items-center gap-2">
+          <img src="assets/clock-icon.svg" alt="Clock icon" class="w-5 h-5">
+          <p id="header-last-updated" class="text-sm text-blue-100 drop-shadow-lg">Last updated: Pending</p>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="flex pt-6 pb-6 justify-center">
+    <div class="max-w-7xl w-full px-2 sm:px-6">
+      <!-- Alerts -->
+      <section class="w-full mb-6">
+        <div class="flex items-center gap-3 p-3 w-full bg-green-50 border-solid border-2 border-green-600 rounded-lg">
+          <img src="assets/status-ok-icon.svg" alt="Positive status icon" class="w-5 h-5">
+          <p class="text-green-800"><b>Pending:</b> Awaiting response from server.</p>
+        </div>
+      </section>
+
+      <!-- Node KPIs -->
+      <section class="w-full mb-6 gap-6 flex flex-col sm:flex-row">
+        <!-- Total nodes -->
+        <div class="flex flex-col gap-3 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+          <div class="flex justify-between items-center w-full">
+            <p class="font-medium">Total Nodes</p>
+            <img src="assets/logo.svg" alt="Amanzi Warden logo" class="w-8 h-8 invert">
+          </div>
+          <p id="nodes-total" class="text-3xl font-bold mt-2 mb-2">-</p>
+        </div>
+
+        <!-- Normal nodes -->
+        <div class="flex flex-col gap-3 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+          <div class="flex justify-between items-center w-full">
+            <p class="font-medium">Normal Nodes</p>
+            <svg class="w-4 h-4 text-green-500" fill="currentColor">
+              <circle cx="8" cy="8" r="8" />
+            </svg>
+          </div>
+          <p id="nodes-normal" class="text-3xl font-bold mt-2 mb-2">-</p>
+        </div>
+
+        <!-- Potential issues nodes -->
+        <div class="flex flex-col gap-3 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+          <div class="flex justify-between items-center w-full">
+            <p class="font-medium">Potential Issues</p>
+            <svg class="w-4 h-4 text-orange-500" fill="currentColor">
+              <circle cx="8" cy="8" r="8" />
+            </svg>
+          </div>
+          <p id="nodes-potential-issues" class="text-3xl font-bold mt-2 mb-2">-</p>
+        </div>
+
+        <!-- Critical nodes -->
+        <div class="flex flex-col gap-3 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+          <div class="flex justify-between items-center w-full">
+            <p class="font-medium">Critical</p>
+            <svg class="w-4 h-4 text-red-500" fill="currentColor">
+              <circle cx="8" cy="8" r="8" />
+            </svg>
+          </div>
+          <p id="nodes-critical" class="text-3xl font-bold mt-2 mb-2">-</p>
+        </div>
+      </section>
+
+      <!-- Monitor controls -->
+      <section class="flex flex-col mb-6 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+        <h1 class="text-2xl font-semibold">Monitor Controls</h1>
+        <p class="text-sm font-normal text-gray-500">Filter and export monitoring data</p>
+        <div class="flex flex-col sm:flex-row mt-7 mb-4 justify-between items-center w-full">
+          <div class="flex gap-3 items-center sm:max-w-sm w-full mb-3 sm:mb-0">
+            <img src="assets/filter-icon.svg" alt="Filter icon" class="w-5 h-5">
+            <input id="node-filter" name="node-filter" type="text" placeholder="Filter by Node ID" class="border-solid border-2 border-gray-300 rounded-md pl-3 p-1 font-normal text-md w-full hover:border-black">
+          </div>
+          <button id="export-csv-button" class="flex items-center justify-center gap-3 w-full sm:w-auto border-2 border-gray-300 rounded-md px-4 py-1 font-medium text-md hover:border-black active:bg-gray-200">
+            <img src="assets/download-icon.svg" class="w-5 h-5">
+            Export to CSV
+          </button>
+        </div>
+      </section>
+      
+      <!-- Node status table -->
+      <section class="flex flex-col mb-6 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+        <h1 class="text-2xl font-semibold">Node Status</h1>
+        <p class="text-sm font-normal text-gray-500">Real-time monitoring of water flow sensors</p>
+        <section class="w-full overflow-x-auto overflow-y-auto max-h-[400px] rounded-lg mt-7 mb-4">
+          <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
+            <thead class="sticky top-0 z-10 bg-gray-100 text-gray-600 uppercase tracking-wider">
+              <tr>
+                <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Node ID</th>
+                <th class="px-6 py-3 whitespace-nowrap min-w-[160px]">Name</th>
+                <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Status</th>
+                <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Flow Rate</th>
+                <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Pressure</th>
+                <th class="px-6 py-3 whitespace-nowrap min-w-[180px]">Coordiantes</th>
+                <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Last Reported</th>
+                <th class="px-6 py-3 whitespace-nowrap min-w-[100px]">Battery</th>
+              </tr>
+            </thead>
+            <tbody id="node-table-body" class="divide-y divide-gray-300">
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 text-gray-700 font-medium">M-001</td>
+                <td class="px-6 py-4 text-gray-700">Main Pump</td>
+                <td class="px-6 py-4 text-green-600 font-semibold">Online</td>
+                <td class="px-6 py-4 text-gray-700">12.5 L/min</td>
+                <td class="px-6 py-4 text-gray-700">3.4 bar</td>
+                <td class="px-6 py-4 text-gray-700">-26.20401, 28.04767</td>
+                <td class="px-6 py-4 text-gray-700">2 mins ago</td>
+                <td class="px-6 py-4 text-yellow-600 font-medium">45%</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+    </div>
+  </main>
+  <footer class="flex pt-6 pb-6 mx-2 justify-center">
+    <div class="flex max-w-7xl w-full sm:px-6 border-t-2 justify-center">
+      <p class="italic text-blue-500 my-8">
+        &copy; <%= footer.year %> <a href="mailto:<%= footer.email %>" class="underline underline-offset-2 hover:text-blue-800"><%= footer.emailText %></a>. <%= footer.text %>
+      </p>
+    </div>
+  </footer>
+</body>
+
+</html>
