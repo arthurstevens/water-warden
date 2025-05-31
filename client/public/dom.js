@@ -61,7 +61,6 @@ function getCellClass(key, value) {
     return classes.join(' ');
 }
 
-
 // Utility for formatting units of measurement
 function formatValue(key, value) {
     if (key === 'flowRate') return `${value} L/min`;
