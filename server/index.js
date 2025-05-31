@@ -11,7 +11,7 @@ app.set('views', path.join(__dirname, '../client/views'));
 app.use(express.static(path.join(__dirname, '../client/public')));
 
 app.get('/', (req, res) => {
-    res.render('index', {
+    res.render('pages/index', {
         title: 'Amanzi Warden',
         header: {
             title: 'Amanzi Warden',

@@ -1,0 +1,29 @@
+<%# Header: includes logo, title, and client status info %>
+<header class="flex bg-blue-600 text-white shadow pt-6 pb-6 justify-center">
+  <div class="max-w-7xl w-full px-2 flex justify-between sm:px-6">
+    <%# Logo and title %>
+    <div class="flex items-center gap-2 drop-shadow-lg">
+      <img src="assets/logo.svg" alt="Amanzi Warden logo" class="mask-alpha w-10 h-10 sm:w-14 sm:h-14">
+      <div>
+        <h1 class="text-2xl font-bold"><%= header.title %></h1>
+        <p class="text-sm text-blue-100"><%= header.subtitle %></p>
+      </div>
+    </div>
+
+    <%# Client status info %>
+    <div class="flex items-center gap-2 sm:gap-8">
+      <%# Connection status %>
+      <div class="flex items-center gap-2">
+        <img id="header-status-icon" src="assets/status-online.svg" alt="Online icon" class="w-5 h-5">
+        <p id="header-status-text" class="text-sm text-white hidden sm:inline">Pending</p>
+      </div>
+
+      <%# Most recent node status update %>
+      <div class="flex items-center gap-2">
+        <img src="assets/clock-icon.svg" alt="Clock icon" class="w-5 h-5">
+        <p class="text-sm text-white hidden sm:inline">Last updated:</p>
+        <p id="header-last-updated" class="text-sm text-white">Pending</p>
+      </div>
+    </div>
+  </div>
+</header>

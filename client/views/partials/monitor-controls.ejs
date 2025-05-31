@@ -1,0 +1,18 @@
+<%# Monitor Controls: CSV exporting functionality and node table filtering %>
+<section class="flex flex-col mb-6 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+  <h1 class="text-2xl font-semibold">Monitor Controls</h1>
+  <p class="text-sm font-normal text-gray-500">Filter and export monitoring data</p>
+
+  <%# Content %>
+  <div class="flex flex-col sm:flex-row mt-7 mb-4 justify-between items-center w-full">
+    <div class="flex gap-3 items-center sm:max-w-sm w-full mb-3 sm:mb-0">
+      <img src="assets/filter-icon.svg" alt="Filter icon" class="w-5 h-5">
+      <input id="node-filter" name="node-filter" type="text" placeholder="Filter by Node ID" class="border-solid border-2 border-gray-300 rounded-md pl-3 p-1 font-normal text-md w-full hover:border-black">
+    </div>
+
+    <button id="export-csv-button" class="flex items-center justify-center gap-3 w-full sm:w-auto border-2 border-gray-300 rounded-md px-4 py-1 font-medium text-md hover:border-black active:bg-gray-200">
+      <img src="assets/download-icon.svg" class="w-5 h-5">
+      Export to CSV
+    </button>
+  </div>
+</section>

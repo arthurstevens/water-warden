@@ -1,0 +1,44 @@
+<%# Node KPI Cards: displays node counts (total, normal, potential issues, critical) %>
+<section class="w-full mb-6 gap-6 flex flex-col sm:flex-row">
+  <!-- Total nodes -->
+  <section class="flex flex-col gap-3 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+    <div class="flex justify-between items-center w-full">
+      <p class="font-medium">Total Nodes</p>
+      <img src="assets/logo.svg" alt="Amanzi Warden logo" class="w-8 h-8 invert">
+    </div>
+    <p id="nodes-total" class="text-3xl font-bold mt-2 mb-2">-</p>
+  </section>
+
+  <%# Normal nodes %>
+  <section class="flex flex-col gap-3 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+    <div class="flex justify-between items-center w-full">
+      <p class="font-medium">Normal Nodes</p>
+      <svg class="w-4 h-4 text-green-500" fill="currentColor">
+        <circle cx="8" cy="8" r="8" />
+      </svg>
+    </div>
+    <p id="nodes-normal" class="text-3xl font-bold mt-2 mb-2">-</p>
+  </section>
+
+  <%# Potential issues nodes %>
+  <section class="flex flex-col gap-3 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+    <div class="flex justify-between items-center w-full">
+      <p class="font-medium">Potential Issues</p>
+      <svg class="w-4 h-4 text-orange-500" fill="currentColor">
+        <circle cx="8" cy="8" r="8" />
+      </svg>
+    </div>
+    <p id="nodes-potential-issues" class="text-3xl font-bold mt-2 mb-2">-</p>
+  </section>
+
+  <%# Critical nodes %>
+  <section class="flex flex-col gap-3 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+    <div class="flex justify-between items-center w-full">
+      <p class="font-medium">Critical</p>
+      <svg class="w-4 h-4 text-red-500" fill="currentColor">
+        <circle cx="8" cy="8" r="8" />
+      </svg>
+    </div>
+    <p id="nodes-critical" class="text-3xl font-bold mt-2 mb-2">-</p>
+  </section>
+</section>
