@@ -24,6 +24,7 @@ export function updateKPIs(kpis) {
     document.getElementById('nodes-critical').textContent = kpis.critical
 }
 
+// Utility for styling a cell based on its key
 function getCellClass(key, value) {
     const base = 'px-6 py-4 text-gray-700';
     const classes = [base];
@@ -33,7 +34,7 @@ function getCellClass(key, value) {
         classes.push('font-semibold');
     }
 
-    // Status colouring
+    // Status text colouring
     if (key === 'status') {
         const statusColor = {
             'Normal': 'text-green-500',
@@ -43,7 +44,7 @@ function getCellClass(key, value) {
         if (statusColor) classes.push(statusColor);
     }
 
-    // Battery colouring
+    // Battery text colouring
     if (key === 'battery') {
         const batteryVal = parseFloat(String(value).replace('%', ''));
         if (!isNaN(batteryVal)) {
@@ -60,6 +61,8 @@ function getCellClass(key, value) {
     return classes.join(' ');
 }
 
+
+// Utility for formatting units of measurement
 function formatValue(key, value) {
     if (key === 'flowRate') return `${value} L/min`;
     if (key === 'pressure') return `${value} bar`;
@@ -67,6 +70,7 @@ function formatValue(key, value) {
     return value;
 }
 
+// Clears and re-populates the node table given a set of nodes
 export function updateTable(nodes) {
     const tableBody = document.getElementById('node-table-body');
     tableBody.innerHTML = '';

@@ -3,12 +3,12 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../client/views'));
 
 app.use(express.static(path.join(__dirname, '../client/public')));
-
 
 app.get('/', (req, res) => {
     res.render('index', {
@@ -27,8 +27,6 @@ app.get('/', (req, res) => {
 });
 
 app.use((req, res) => res.status(404).send('Page not found.'));
-
-const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

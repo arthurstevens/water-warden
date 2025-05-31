@@ -4,14 +4,17 @@ import { updateStatus, updateKPIs, updateTable } from './dom.js'; // , , , updat
 //import { formatTime } from './time.js';
 
 // Configuration
-const REFRESH_INTERVAL = 30_000; // 30 seconds
+const REFRESH_INTERVAL = 5_000; // 30 seconds
 const TIMEOUT = 5_000;           // 5 second timeout for fetch
 
-// Track last update time
 let lastUpdate = null;
+//let seesaw = false;
 
 async function updateDashboard() {
     try {
+        //seesaw = !seesaw;
+        //if (seesaw) { throw new Error('yay'); }
+        
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), TIMEOUT);
 
@@ -23,8 +26,7 @@ async function updateDashboard() {
         updateTable(data.nodes);
         //lastUpdate = new Date();
         //updateLastUpdated(formatTime(lastUpdate));
-        //showAlert('No Alerts', 'All nodes reporting operational.');
-
+        //showAlert(data.nodes);
     } catch (error) {
         updateStatus(false);
         //showAlert('error', 'Unable to fetch node data.');

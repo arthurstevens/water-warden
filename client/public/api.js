@@ -48,9 +48,9 @@ export async function fetchNodeData(signal) {
     // Derive KPIs
     const kpis = {
         total: nodes.length,
-        normal: nodes.filter(n => n.status === 'normal').length,
-        potentialIssues: nodes.filter(n => n.status === 'potential').length,
-        critical: nodes.filter(n => n.status === 'critical').length
+        normal: nodes.filter(n => n.status === 'Normal').length,
+        potentialIssues: nodes.filter(n => n.status === 'Potential Issues').length,
+        critical: nodes.filter(n => n.status === 'Critical').length
     };
 
     return { nodes, kpis };
