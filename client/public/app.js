@@ -5,7 +5,7 @@ import { formatTime } from './time.js';
 
 // Configuration
 const NODE_DATA_REFRESH_INTERVAL = 5_000;
-const NODE_REFRESH_TIMEOUT = 5_000;
+const DASHBOARD_REFRESH_TIMEOUT = 5_000;
 const LAST_UPDATED_REFRESH_INTERVAL = 1_000;
 
 let lastUpdate = null;
@@ -17,15 +17,17 @@ async function updateDashboard() {
         //if (seesaw) { throw new Error('yay'); }
         
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), NODE_REFRESH_TIMEOUT);
+        const timeout = setTimeout(() => controller.abort(), DASHBOARD_REFRESH_TIMEOUT);
 
-        const data = await fetchNodeData(controller.signal);
+        const nodeData = await fetchNodeData(controller.signal);
+        //const alertData = await fetchAlertData(controller.signal);
+
         clearTimeout(timeout);
 
         updateStatusContent(true);
-        updateKPIContent(data.kpis);
-        updateTableContent(data.nodes);
-        //showAlert(data.nodes);
+        updateKPIContent(nodeData.kpis);
+        updateTableContent(nodeData.nodes);
+        //showAlert(nodeData.nodes);
         lastUpdate = new Date();
     } catch (error) {
         updateStatusContent(false);

@@ -69,13 +69,34 @@ function formatValue(key, value) {
     return value;
 }
 
-// Clears and re-populates the node table given a set of nodes
+// Clears and re-populates the node table and its headers from a nodes list
 export function updateTableContent(nodes) {
+    const tableHeaders = document.getElementById('node-table-headers');
     const tableBody = document.getElementById('node-table-body');
+    
+    // Clear existing table data
+    tableHeaders.innerHTML = '';
     tableBody.innerHTML = '';
 
+    // Edge case: no node data
+    if (!nodes || nodes.lengths === 0) {
+        tableBody.innerHTML = '<tr><td colspan="100%">No available data</td></tr>';
+    }
+
+    // Update headers
+    const headers = Object.keys(nodes[0])
+    
+    for (const header of headers) {
+        const th = document.createElement('th');
+        th.textContent = header;
+        th.className = 'px-6 py-3 whitespace-nowrap min-w-[100px]';
+        tableHeaders.appendChild(th);
+    }
+
+    // Update node data rows
     for (const node of nodes) {
         const row = tableBody.insertRow();
+        row.className = 'hover:bg-gray-50';
 
         for (const [key, value] of Object.entries(node)) {
             const cell = row.insertCell();
@@ -85,6 +106,7 @@ export function updateTableContent(nodes) {
     }
 }
 
+// Updates the text content for the 'Last updated' status in header
 export function updateLastUpdatedContent(lastUpdatedText) {
     const lastUpdated = document.getElementById('header-last-updated');
     lastUpdated.textContent = lastUpdatedText;

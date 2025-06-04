@@ -4,22 +4,16 @@
   <p class="text-sm font-normal text-gray-500">Real-time monitoring of water flow sensors</p>
   <section class="w-full overflow-x-auto overflow-y-auto max-h-[400px] rounded-lg mt-7 mb-4">
     <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
-      <%# Headers %>
-      <thead class="sticky top-0 z-10 bg-gray-100 text-gray-600 uppercase tracking-wider">
-        <tr>
-          <% const headings = ["Node ID", "Name", "Status", "Flow Rate", "Pressure", "Coordinates", "Last Reported", "Battery"]; %>
-          <% headings.forEach(heading => { %>
-            <th class="px-6 py-3 whitespace-nowrap min-w-[100px]"><%= heading %></th>
-          <% }) %>
+      <%# Headers populated by client-side JS %>
+      <thead class="bg-gray-100 text-gray-600 uppercase tracking-wider">
+        <tr id="node-table-headers" class="px-6 py-3 whitespace-nowrap min-w-[100px]">
+          <th class="px-6 py-3 whitespace-nowrap text-center">Fetching...</th>
         </tr>
       </thead>
-
       <%# Node rows %>
       <tbody id="node-table-body" class="divide-y divide-gray-300">
-        <tr class="hover:bg-gray-50">
-          <% for (let i = 0; i < 8; i++) { %>
+        <tr>
             <td class="px-6 py-4 text-gray-700 font-semibold">-</td>
-          <% } %>
         </tr>
       </tbody>
     </table>
