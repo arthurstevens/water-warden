@@ -45,14 +45,6 @@ export async function fetchNodeData(signal) {
         }
     ];
 
-    // Derive KPIs
-    const kpis = {
-        total: nodes.length,
-        normal: nodes.filter(n => n.status === 1).length,
-        potentialIssues: nodes.filter(n => n.status === 2).length,
-        critical: nodes.filter(n => n.status === 3).length
-    };
-
     // Dummy alert
     const alert = {
         heading: 'Example Alert',
@@ -60,5 +52,5 @@ export async function fetchNodeData(signal) {
         severity: 2
     };
 
-    return { nodes, kpis, alert };
+    return { nodes, alert };
 }

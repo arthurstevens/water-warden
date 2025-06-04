@@ -20,11 +20,16 @@ export function updateConnectedStatusContent(connected) {
     }
 }
 
-export function updateKPIContent(kpis) {
-    document.getElementById('nodes-total').textContent = kpis.total
-    document.getElementById('nodes-normal').textContent = kpis.normal
-    document.getElementById('nodes-potential-issues').textContent = kpis.potentialIssues
-    document.getElementById('nodes-critical').textContent = kpis.critical
+export function updateKPIContent(nodes) {
+    const total = nodes.length;
+    const severity1 = nodes.filter(n => n.status === 1).length;
+    const severity2 = nodes.filter(n => n.status === 2).length;
+    const severity3 = nodes.filter(n => n.status === 3).length;
+
+    document.getElementById('nodes-total').textContent = total;
+    document.getElementById('nodes-severity-1').textContent = severity1;
+    document.getElementById('nodes-severity-2').textContent = severity2;
+    document.getElementById('nodes-severity-3').textContent = severity3;
 }
 
 // Clears and re-populates the node table and its headers from a nodes list
@@ -76,21 +81,29 @@ export function updateAlertContent(alert) {
     const alertHeading = document.getElementById('alert-heading');
     const alertContent = document.getElementById('alert-content');
 
-    
+    // Set text content
     alertHeading.textContent = alert.heading + ':';
     alertContent.textContent = alert.content;
 
-    const style = {
-        0 : { colour: 'gray', img: 'status-ok-icon.svg'},
+    // Severity style mapping
+    const styleMap = {
+        0 : { colour: 'gray', img: 'loading-icon.svg'},
         1 : { colour: 'green', img: 'status-ok-icon.svg'},
         2 : { colour: 'yellow', img: 'status-warning-icon.svg'},
         3 : { colour: 'red', img: 'status-warning-icon.svg'}
-    }[alert.severity];
+    };
 
-    alertContainer.classList.add(`border-${style.colour}-600`);
-    alertContainer.classList.add(`bg-${style.colour}-50`);
+    // Remove any existing style classes
+    for (const { colour } of Object.values(styleMap)) {
+        alertContainer.classList.remove(`border-${colour}-600`, `bg-${colour}-50`);
+        alertHeading.classList.remove(`text-${colour}-800`);
+        alertContent.classList.remove(`text-${colour}-800`);
+    }
+
+    // Apply new style classes
+    const style = styleMap[alert.severity];
+    alertContainer.classList.add(`border-${style.colour}-600`, `bg-${style.colour}-50`);
     alertHeading.classList.add(`text-${style.colour}-800`);
     alertContent.classList.add(`text-${style.colour}-800`);
-
     alertImage.src = `/assets/${style.img}`;
 }
