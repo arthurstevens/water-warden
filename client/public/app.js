@@ -26,7 +26,7 @@ async function updateDashboard() {
         if (!wasDashboardRefresh) {
             updateErrorContent({
                 heading: 'Retrying',
-                content: 'Awaiting response from server.',
+                content: 'Awaiting response from server...',
                 processing: true
             });
         }
