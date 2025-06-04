@@ -1,7 +1,7 @@
 import { fetchNodeData } from './api.js';
 import { updateStatusContent, updateKPIContent, updateTableContent, updateLastUpdatedContent } from './dom.js'; // , , , updateLastUpdated
 //import { showAlert } from './alerts.js';
-import { formatTime } from './time.js';
+import { formatTime } from './nodeFormatter.js';
 
 // Configuration
 const NODE_DATA_REFRESH_INTERVAL = 5_000;

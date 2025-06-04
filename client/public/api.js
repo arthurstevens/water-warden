@@ -3,7 +3,7 @@
 export async function fetchNodeData(signal) {
     // Simulate network delay (500ms) and support for abort signal
     await new Promise((resolve, reject) => {
-        const timeout = setTimeout(resolve, 500);
+        const timeout = setTimeout(resolve, 50000);
 
         signal.addEventListener('abort', () => {
             clearTimeout(timeout);
@@ -16,7 +16,7 @@ export async function fetchNodeData(signal) {
         {
             id: 'Node-001',
             name: 'Valve A1',
-            status: 'Normal',
+            status: 1,
             flowRate: 12.4,
             pressure: 1.2,
             coordinates: '26.2041° S, 28.0473° E',
@@ -26,7 +26,7 @@ export async function fetchNodeData(signal) {
         {
             id: 'Node-002',
             name: 'Valve B2',
-            status: 'Potential Issues',
+            status: 2,
             flowRate: 1.2,
             pressure: 1.0,
             coordinates: '26.2032° S, 28.0494° E',
@@ -36,7 +36,7 @@ export async function fetchNodeData(signal) {
         {
             id: 'Node-003',
             name: 'Valve C3',
-            status: 'Critical',
+            status: 3,
             flowRate: 0.0,
             pressure: 0.0,
             coordinates: '26.2042° S, 28.0474° E',
@@ -48,9 +48,9 @@ export async function fetchNodeData(signal) {
     // Derive KPIs
     const kpis = {
         total: nodes.length,
-        normal: nodes.filter(n => n.status === 'Normal').length,
-        potentialIssues: nodes.filter(n => n.status === 'Potential Issues').length,
-        critical: nodes.filter(n => n.status === 'Critical').length
+        normal: nodes.filter(n => n.status === 1).length,
+        potentialIssues: nodes.filter(n => n.status === 2).length,
+        critical: nodes.filter(n => n.status === 3).length
     };
 
     return { nodes, kpis };
