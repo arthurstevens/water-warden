@@ -1,9 +1,9 @@
 // Fetching data from the server
 
 export async function fetchNodeData(signal) {
-    // Simulate network delay (500ms) and support for abort signal
+    // Simulate a network delay
     await new Promise((resolve, reject) => {
-        const timeout = setTimeout(resolve, 50000);
+        const timeout = setTimeout(resolve, 500);
 
         signal.addEventListener('abort', () => {
             clearTimeout(timeout);
@@ -53,5 +53,12 @@ export async function fetchNodeData(signal) {
         critical: nodes.filter(n => n.status === 3).length
     };
 
-    return { nodes, kpis };
+    // Dummy alert
+    const alert = {
+        heading: 'Example Alert',
+        content: 'Example alert content...',
+        severity: 2
+    };
+
+    return { nodes, kpis, alert };
 }

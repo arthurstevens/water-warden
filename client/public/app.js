@@ -1,5 +1,5 @@
 import { fetchNodeData } from './api.js';
-import { updateStatusContent, updateKPIContent, updateTableContent, updateLastUpdatedContent } from './dom.js'; // , , , updateLastUpdated
+import { updateConnectedStatusContent, updateKPIContent, updateTableContent, updateLastUpdatedContent, updateAlertContent } from './dom.js'; 
 //import { showAlert } from './alerts.js';
 import { formatTime } from './nodeFormatter.js';
 
@@ -20,18 +20,23 @@ async function updateDashboard() {
         const timeout = setTimeout(() => controller.abort(), DASHBOARD_REFRESH_TIMEOUT);
 
         const nodeData = await fetchNodeData(controller.signal);
-        //const alertData = await fetchAlertData(controller.signal);
 
         clearTimeout(timeout);
 
-        updateStatusContent(true);
+        updateConnectedStatusContent(true);
         updateKPIContent(nodeData.kpis);
         updateTableContent(nodeData.nodes);
-        //showAlert(nodeData.nodes);
+        updateAlertContent(nodeData.alert)
         lastUpdate = new Date();
     } catch (error) {
-        updateStatusContent(false);
-        //showAlert('error', 'Unable to fetch node data.');
+        updateConnectedStatusContent(false);
+
+        const alert = {
+            heading: 'Error',
+            content: `Failed to fetch node data. Retrying in ${NODE_DATA_REFRESH_INTERVAL}ms.`,
+            severity: 3
+        }
+        updateAlertContent(alert)
         console.error('Data Refresh Error', error);
     } 
 }

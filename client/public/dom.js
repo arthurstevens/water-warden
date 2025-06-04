@@ -1,7 +1,7 @@
 // DOM manipulation
 import { formatValue, getCellClass } from './nodeFormatter.js';
 
-export function updateStatusContent(connected) {
+export function updateConnectedStatusContent(connected) {
     const icon = document.getElementById('header-status-icon');
     const text = document.getElementById('header-status-text');
 
@@ -67,3 +67,28 @@ export function updateLastUpdatedContent(lastUpdatedText) {
     const lastUpdated = document.getElementById('header-last-updated');
     lastUpdated.textContent = lastUpdatedText;
 } 
+
+export function updateAlertContent(alert) {
+    const alertContainer = document.getElementById('alert-container');
+    const alertImage = document.getElementById('alert-img');
+    const alertHeading = document.getElementById('alert-heading');
+    const alertContent = document.getElementById('alert-content');
+
+    
+    alertHeading.textContent = alert.heading + ':';
+    alertContent.textContent = alert.content;
+
+    const style = {
+        0 : { colour: 'gray', img: 'status-ok-icon.svg'},
+        1 : { colour: 'green', img: 'status-ok-icon.svg'},
+        2 : { colour: 'yellow', img: 'status-warning-icon.svg'},
+        3 : { colour: 'red', img: 'status-warning-icon.svg'}
+    }[alert.severity];
+
+    alertContainer.classList.add(`border-${style.colour}-600`);
+    alertContainer.classList.add(`bg-${style.colour}-50`);
+    alertHeading.classList.add(`text-${style.colour}-800`);
+    alertContent.classList.add(`text-${style.colour}-800`);
+
+    alertImage.src = `/assets/${style.img}`;
+}

@@ -1,7 +1,10 @@
 <%# Alerts: reports status %>
 <section class="w-full mb-6">
-  <div class="flex items-center gap-3 p-3 w-full bg-gray-50 border-solid border-2 border-gray-600 rounded-lg">
-    <img src="assets/loading-icon.svg" alt="Positive status icon" class="w-5 h-5">
-    <p class="text-gray-800"><b>Pending:</b> Awaiting response from server.</p>
+  <div id="alert-container" class="flex items-center gap-3 p-3 w-full bg-gray-50 border-solid border-2 border-gray-600 rounded-lg">
+    <img id="alert-img" src="assets/loading-icon.svg" alt="Alert indicator" class="w-5 h-5">
+    <div class="flex gap-1">
+      <p id="alert-heading" class="text-gray-800 font-bold">Pending:</p>
+      <p id="alert-content" class="text-gray-800">Awaiting response from server.</p>
+    </div>
   </div>
 </section>
