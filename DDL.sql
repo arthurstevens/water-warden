@@ -8,19 +8,19 @@ SET search_path TO "amanzi-warden";
 CREATE TABLE IF NOT EXISTS nodeName (
     nodeID SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    latitude DOUBLE PRECISION NOT NULL,
-    longitude DOUBLE PRECISION NOT NULL
+    latitude REAL NOT NULL,
+    longitude REAL NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS nodeLog (
     nodeID SERIAL PRIMARY KEY,
     timeStamp TIMESTAMP NOT NULL,
-    flowRate DOUBLE PRECISION NOT NULL,
-    pressure DOUBLE PRECISION NOT NULL,
-    battery DOUBLE PRECISION NOT NULL,
-    temperature DOUBLE PRECISION NOT NULL,
-    turbidity DOUBLE PRECISION NOT NULL,
-    totalDissolvedSolids DOUBLE PRECISION NOT NULL,
+    flowRate REAL NOT NULL,
+    pressure REAL NOT NULL,
+    battery REAL NOT NULL,
+    temperature REAL NOT NULL,
+    turbidity REAL NOT NULL,
+    totalDissolvedSolids REAL NOT NULL,
     CONSTRAINT nodeID FOREIGN KEY (nodeID) REFERENCES nodeName
 );
 
