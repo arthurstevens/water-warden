@@ -1,6 +1,6 @@
 // DOM manipulation
 
-export function updateStatus(connected) {
+export function updateStatusContent(connected) {
     const icon = document.getElementById('header-status-icon');
     const text = document.getElementById('header-status-text');
 
@@ -17,7 +17,7 @@ export function updateStatus(connected) {
     }
 }
 
-export function updateKPIs(kpis) {
+export function updateKPIContent(kpis) {
     document.getElementById('nodes-total').textContent = kpis.total
     document.getElementById('nodes-normal').textContent = kpis.normal
     document.getElementById('nodes-potential-issues').textContent = kpis.potentialIssues
@@ -70,7 +70,7 @@ function formatValue(key, value) {
 }
 
 // Clears and re-populates the node table given a set of nodes
-export function updateTable(nodes) {
+export function updateTableContent(nodes) {
     const tableBody = document.getElementById('node-table-body');
     tableBody.innerHTML = '';
 
@@ -84,3 +84,8 @@ export function updateTable(nodes) {
         }
     }
 }
+
+export function updateLastUpdatedContent(lastUpdatedText) {
+    const lastUpdated = document.getElementById('header-last-updated');
+    lastUpdated.textContent = lastUpdatedText;
+} 
