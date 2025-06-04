@@ -7,11 +7,13 @@ export function updateConnectedStatusContent(connected) {
 
     if (connected) {
         icon.src = 'assets/status-online.svg';
+        icon.alt = 'Connected icon';
         text.textContent = 'Online';
         text.classList.remove('text-red-200');
         text.classList.add('text-white');
     } else {
         icon.src = 'assets/status-offline.svg';
+        icon.alt = 'Disconnected icon';
         text.textContent = 'Offline';
         text.classList.remove('text-white');
         text.classList.add('text-red-200');
