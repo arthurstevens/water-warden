@@ -59,7 +59,7 @@ export function updateTableContent(nodes) {
     // Update node data rows
     for (const node of nodes) {
         const row = tableBody.insertRow();
-        row.className = 'hover:bg-gray-50';
+        row.className = 'hover:bg-gray-100';
 
         for (const [key, value] of Object.entries(node)) {
             const cell = row.insertCell();
