@@ -1,10 +1,21 @@
-<%# Alerts: reports status %>
-<section class="w-full mb-6">
-  <div id="alert-container" class="flex items-center gap-3 p-3 w-full bg-gray-50 border-solid border-2 border-gray-600 rounded-lg">
-    <img id="alert-img" src="assets/loading-icon.svg" alt="Alert indicator" class="w-5 h-5">
-    <div class="flex gap-1">
-      <p id="alert-heading" class="text-gray-800 font-bold">Pending:</p>
-      <p id="alert-content" class="text-gray-800">Awaiting response from server.</p>
-    </div>
+<%# Alerts: reports alerts and errors %>
+
+<%# Errors %>
+<section id="error-container" class="w-full mb-6 flex items-center gap-3 p-3 w-full bg-red-50 border-solid border-2 border-red-600 rounded-lg hidden">
+  <img id="error-img" src="assets/status-warning-icon.svg" alt="Error indicator" class="w-5 h-5">
+  <div class="flex gap-1">
+    <p id="error-heading" class="text-red-800 font-bold"></p>
+    <p id="error-content" class="text-red-800"></p>
   </div>
+</section>
+
+<%# Alerts %>
+<section id="alert-container" class="w-full mb-6 flex items-center gap-3 p-3 w-full bg-gray-50 border-solid border-2 border-gray-600 rounded-lg">
+    <img id="alert-img" src="assets/loading-icon.svg" alt="Alert indicator" class="w-5 h-5">
+    <div class="w-full">
+      <div class="flex gap-1">
+        <p id="alert-heading" class="text-gray-800 font-bold">Alerts:</p>
+        <p id="alert-content" class="text-gray-800">Awaiting response from server.</p>
+      </div>
+    </div>
 </section>

@@ -1,6 +1,12 @@
 import { fetchNodeData } from './api.js';
-import { updateConnectedStatusContent, updateKPIContent, updateTableContent, updateLastUpdatedContent, updateAlertContent } from './dom.js'; 
-//import { showAlert } from './alerts.js';
+import { 
+    updateConnectedStatusContent, 
+    updateKPIContent, 
+    updateTableContent, 
+    updateLastUpdatedContent, 
+    updateAlertContent, 
+    updateErrorContent 
+} from './dom.js'; 
 import { formatTime } from './nodeFormatter.js';
 
 // Configuration
@@ -9,20 +15,19 @@ const DASHBOARD_REFRESH_TIMEOUT = 5_000;
 const LAST_UPDATED_REFRESH_INTERVAL = 1_000;
 
 let lastUpdate = null;
-let wasDashboardRefresh = false;
+let wasDashboardRefresh = true;
 //let seesaw = false;
 
 async function updateDashboard() {
     try {
-        // Display retrying alert if previous refesh failed
-        // NEEDS WORK. Might cause issues, wipes prior alert, potentially very annoying for end-user
+        // Update error message if previous fetch failed
         if (!wasDashboardRefresh) {
             let alert = {
-                heading: 'Pending',
+                heading: 'Retrying',
                 content: 'Awaiting response from server.',
-                severity: 0
+                processing: true
             }
-            updateAlertContent(alert)
+            updateErrorContent(alert)
         }
 
         //seesaw = !seesaw;
@@ -41,18 +46,20 @@ async function updateDashboard() {
         updateTableContent(nodeData.nodes);
         updateAlertContent(nodeData.alert)
 
+        // Clear any error messages
+        updateErrorContent(null);
+
         lastUpdate = new Date();
         wasDashboardRefresh = true;
     } catch (error) {
         updateConnectedStatusContent(false);
 
-        // NEEDS WORK. Might cause issues, wipes prior alert, potentially very annoying for end-user
         let alert = {
             heading: 'Error',
-            content: `Failed to fetch node data. Retrying in ${NODE_DATA_REFRESH_INTERVAL}ms.`,
-            severity: 3
+            content: `Failed to fetch node data, retrying in ${NODE_DATA_REFRESH_INTERVAL}ms.`,
+            processing: false
         }
-        updateAlertContent(alert)
+        updateErrorContent(alert)
         wasDashboardRefresh = false;
         console.error('Data Refresh Error', error);
     } 

@@ -1,6 +1,7 @@
 // DOM manipulation
 import { formatValue, getCellClass } from './nodeFormatter.js';
 
+// Adjusts connected status from bool
 export function updateConnectedStatusContent(connected) {
     const icon = document.getElementById('header-status-icon');
     const text = document.getElementById('header-status-text');
@@ -20,6 +21,7 @@ export function updateConnectedStatusContent(connected) {
     }
 }
 
+// Updates node KPIs per severity level from a set of nodes
 export function updateKPIContent(nodes) {
     const total = nodes.length;
     const severity1 = nodes.filter(n => n.status === 1).length;
@@ -75,6 +77,7 @@ export function updateLastUpdatedContent(lastUpdatedText) {
     lastUpdated.textContent = lastUpdatedText;
 } 
 
+// Updates alert content, image, and styling 
 export function updateAlertContent(alert) {
     const alertContainer = document.getElementById('alert-container');
     const alertImage = document.getElementById('alert-img');
@@ -106,4 +109,29 @@ export function updateAlertContent(alert) {
     alertHeading.classList.add(`text-${style.colour}-800`);
     alertContent.classList.add(`text-${style.colour}-800`);
     alertImage.src = `/assets/${style.img}`;
+}
+
+// Updates error content
+export function updateErrorContent(alert) {
+    const errorContainer = document.getElementById('error-container');
+    const errorImage = document.getElementById('error-img');
+    const errorHeading = document.getElementById('error-heading');
+    const errorContent = document.getElementById('error-content');
+    
+    // Set visibily 
+    if (!alert) {
+        errorContainer.classList.add("hidden");
+        return;
+    }
+    errorContainer.classList.remove("hidden");
+
+    // Set text content
+    errorHeading.textContent = alert.heading + ':';
+    errorContent.textContent = alert.content;
+
+    // Set image
+    errorImage.src = {
+        true: 'assets/loading-icon.svg',
+        false: 'assets/status-warning-icon.svg'
+    }[alert.processing];
 }
