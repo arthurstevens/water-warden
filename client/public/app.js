@@ -5,9 +5,10 @@ import {
     updateTableContent, 
     updateLastUpdatedContent, 
     updateAlertContent, 
-    updateErrorContent 
+    updateErrorContent,
+    setTableFilterColumns
 } from './dom.js'; 
-import { formatTime } from './nodeFormatter.js';
+import { formatTime } from './utils.js';
 
 // Configuration
 const NODE_DATA_REFRESH_INTERVAL = 5_000;
@@ -18,8 +19,26 @@ const CACHE_TIMESTAMP_KEY = 'nodeDataTimestamp';
 
 let lastUpdate = null;
 let wasDashboardRefresh = true;
-//let seesaw = false;
+let nodeFilter = null;
+let firstFetch = true;
 
+document.getElementById('node-filter-button').addEventListener('click', () => {
+    const column = document.getElementById('node-filter-column').value;
+    const value = document.getElementById('node-filter-text').value;
+
+    nodeFilter = {
+        column,
+        value
+    };
+
+    const cached = localStorage.getItem('nodeData');
+    if (cached) {
+        const data = JSON.parse(cached);
+        updateTableContent(data.nodes, nodeFilter);
+    }
+});
+
+//let seesaw = false;
 async function updateDashboard() {
     try {
         // Update error message if previous fetch failed
@@ -45,8 +64,12 @@ async function updateDashboard() {
         // Update DOM with new data
         updateConnectedStatusContent(true);
         updateKPIContent(nodeData.nodes);
-        updateTableContent(nodeData.nodes);
+        updateTableContent(nodeData.nodes, nodeFilter);
         updateAlertContent(nodeData.alert)
+        if (firstFetch) {
+            setTableFilterColumns(nodeData.nodes);
+            firstFetch = false;
+        }
 
         // Save to cache
         localStorage.setItem(CACHE_KEY, JSON.stringify(nodeData));

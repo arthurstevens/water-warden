@@ -3,7 +3,7 @@
 export async function fetchNodeData(signal) {
     // Simulate a network delay
     await new Promise((resolve, reject) => {
-        const timeout = setTimeout(resolve, 5_001);
+        const timeout = setTimeout(resolve, 500);
 
         signal.addEventListener('abort', () => {
             clearTimeout(timeout);

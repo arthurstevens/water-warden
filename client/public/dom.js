@@ -1,4 +1,5 @@
 // DOM manipulation
+import { filterNodes, toTitleCase } from './utils.js';
 import { formatValue, getCellClass } from './nodeFormatter.js';
 
 // Adjusts connected status from bool
@@ -35,23 +36,30 @@ export function updateKPIContent(nodes) {
 }
 
 // Clears and re-populates the node table and its headers from a nodes list
-export function updateTableContent(nodes) {
+export function updateTableContent(nodes, filter) {
     const tableHeaders = document.getElementById('node-table-headers');
     const tableBody = document.getElementById('node-table-body');
     
-    // Clear existing table data
-    tableHeaders.innerHTML = '';
+    // Always clear the node data
     tableBody.innerHTML = '';
 
-    // Edge case: no node data
-    if (!nodes || nodes.lengths === 0) {
-        tableBody.innerHTML = '<tr><td colspan="100%">No available data</td></tr>';
+    nodes = filterNodes(nodes, filter)
+    if (!nodes || nodes.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="100%" class="px-6 py-4 text-gray-700 font-semibold text-lg text-center">No available data</td></tr>';
+        return;
     }
 
+    // Only clear headers if they can be set again
+    tableHeaders.innerHTML = '';
+    
     // Update headers
-    const headers = Object.keys(nodes[0])
-
+    const headers = Object.keys(nodes[0]);
+    let formattedHeaders = []
     for (const header of headers) {
+        formattedHeaders.push(toTitleCase(header));
+    }
+
+    for (const header of formattedHeaders) {
         const th = document.createElement('th');
         th.textContent = header;
         th.className = 'px-6 py-3 whitespace-nowrap min-w-[100px]';
@@ -134,4 +142,16 @@ export function updateErrorContent(alert) {
         true: 'assets/loading-icon.svg',
         false: 'assets/status-warning-icon.svg'
     }[alert.processing];
+}
+
+export function setTableFilterColumns(nodes) {
+    const filterColumnSelection = document.getElementById('node-filter-column');
+    const headers = Object.keys(nodes[0]);
+
+    headers.forEach(header => {
+        const option = document.createElement('option');
+        option.value = header;
+        option.textContent = toTitleCase(header);
+        filterColumnSelection.appendChild(option);
+    });
 }
