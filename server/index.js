@@ -27,6 +27,53 @@ app.get('/', (req, res) => {
     });
 });
 
+
+app.use(express.json());
+
+app.post('/api/simulate', async (req, res) => {
+    const data = req.body;
+
+    // Checking for empty required fields
+    if (!data || !data.nodeid || !data.timestamp || !data.flowrate || !data.pressure || !data.battery || !data.temperature) {
+        return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const client = new Client({
+        host: process.env.PG_HOST,
+        port: process.env.PG_PORT,
+        user: process.env.PG_USER,
+        password: process.env.PG_PASSWORD,
+        database: process.env.PG_DATABASE,
+        ssl: false,
+    });
+
+    try {
+        await client.connect();
+        await client.query(`SET search_path TO "amanzi-warden";`);
+
+        query = `INSERT INTO nodeLog (nodeID, timeStamp, flowRate, pressure, battery, temperature, turbidity, totalDissolvedSolids) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`;
+
+        await client.query(query, [
+            data.nodeid,
+            new Date(data.timestamp),
+            data.flowrate,
+            data.pressure,
+            data.battery,
+            data.temperature,
+            data.turbidity,
+            data.totaldissolvedsolids
+        ]);
+        res.status(200).json({ message: "Data inserted successfully" });
+
+    } catch (err) {
+        console.error("DB insert error:", err);
+        res.status(500).json({ error: "Database insert failed" });
+    } finally {
+        client.end();
+    }
+});
+
+
 app.get('/api/read', async (req, res) => {
     const client = new Client({
         host: process.env.PG_HOST,
