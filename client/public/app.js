@@ -22,22 +22,6 @@ let wasDashboardRefresh = true;
 let nodeFilter = null;
 let firstFetch = true;
 
-document.getElementById('node-filter-button').addEventListener('click', () => {
-    const column = document.getElementById('node-filter-column').value;
-    const value = document.getElementById('node-filter-text').value;
-
-    nodeFilter = {
-        column,
-        value
-    };
-
-    const cached = localStorage.getItem('nodeData');
-    if (cached) {
-        const data = JSON.parse(cached);
-        updateTableContent(data.nodes, nodeFilter);
-    }
-});
-
 //let seesaw = false;
 async function updateDashboard() {
     try {
@@ -128,6 +112,27 @@ function restoreFromCache() {
         console.info('Loaded dashboard from cache.');
     }
 }
+
+
+// Filtering
+const filterText = document.getElementById('node-filter-text');
+const filterColumn = document.getElementById('node-filter-column');
+
+function setTableFilter() {
+    const column = document.getElementById('node-filter-column').value;
+    const value = document.getElementById('node-filter-text').value;
+
+    nodeFilter = { column, value };
+
+    const cached = localStorage.getItem('nodeData');
+    if (cached) {
+        const data = JSON.parse(cached);
+        updateTableContent(data.nodes, nodeFilter);
+    }
+};
+
+filterText.addEventListener('input', setTableFilter) // Add debouncing?
+filterColumn.addEventListener('change', setTableFilter)
 
 updateLastUpdated(null);
 restoreFromCache();
