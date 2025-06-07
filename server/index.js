@@ -35,7 +35,7 @@ app.post('/api/simulate', async (req, res) => {
 
     // Checking for empty required fields
     if (!data || !data.nodeid || !data.timestamp || !data.flowrate || !data.pressure || !data.battery || !data.temperature) {
-        return res.status(400).json({ message: "Missing required fields" });
+        return res.status(400).json({ message: "Missing required fields", data: data });
     }
 
     const client = new Client({
@@ -88,12 +88,12 @@ app.get('/api/read', async (req, res) => {
         await client.connect();
         await client.query(`SET search_path TO "amanzi-warden";`);
 
-        const result = await client.query(`SELECT * FROM nodeView;`);
+        const result = await client.query(`SELECT DISTINCT ON (name) * FROM nodeView ORDER BY name, timestamp DESC;`);
 
         const formatted = result.rows.map(row => {
             return {
-                nodeid: row.nodeid,
-                timestamp: row.timestamp.toISOString().split('T')[0],
+                name: row.name,
+                timestamp: row.timestamp,
                 flowRate: row.flowrate,
                 pressure: row.pressure,
                 battery: row.battery,

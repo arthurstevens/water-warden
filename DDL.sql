@@ -1,3 +1,5 @@
+ROLLBACK;
+
 DROP SCHEMA IF EXISTS "amanzi-warden" CASCADE;
 
 CREATE SCHEMA IF NOT EXISTS "amanzi-warden";
@@ -61,16 +63,12 @@ CREATE TABLE IF NOT EXISTS announcementLog (
     CONSTRAINT fk_announcementLog_announcementID FOREIGN KEY (announcementID) REFERENCES announcementPresets(announcementID)
 );
 
--- View
-CREATE OR REPLACE VIEW nodeView AS SELECT * FROM nodeLog;
-
--- Seed data
 INSERT INTO nodeName (name, latitude, longitude) VALUES
-('Node001', 28.82863, 30.24287);
+('Node001', 28.52955, 30.26594),
+('Node002', 29.52955, 29.26594);
 
-INSERT INTO nodeLog (nodeID, timestamp, flowRate, pressure, battery, temperature, turbidity, totalDissolvedSolids) VALUES
-(1, NOW(), 11.2, 1.0, 85, 22.1, 2.5, 5.8),
-(1, NOW(), 10.7, 0.9, 86, 23.0, 2.9, 5.5);
+-- View
+CREATE OR REPLACE VIEW nodeView AS SELECT nodeName.name, nodeLog.timestamp, nodeLog.flowRate, nodeLog.pressure, nodeLog.battery, nodeLog.temperature, nodeLog.turbidity, nodeLog.totalDissolvedSolids FROM nodeName LEFT JOIN nodeLog ON nodeName.nodeID = nodeLog.nodeID;
 
 -- Test query
 SELECT * FROM nodeView;

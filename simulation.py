@@ -6,8 +6,8 @@ import requests
 
 while True:
     data = {
-        "nodeid": 1,
-        "timestamp": str(datetime.datetime.now().strftime("%Y-%m-%d")),
+        "nodeid": random.randint(1,2),
+        "timestamp": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
         "flowrate": random.randint(0,20),
         "pressure": round(random.uniform(0.75,1.25),2),
         "battery": random.randint(1,100),
@@ -24,6 +24,6 @@ while True:
 
     print("Response:", response.status_code, response.text)
     
-    time.sleep(5)
     # break
+    time.sleep(5)
 
