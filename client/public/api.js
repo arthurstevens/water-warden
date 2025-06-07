@@ -16,11 +16,8 @@ export async function fetchNodeData(signal) {
     const { nodes } = await response.json();
 
     // Dummy alert
-    const alert = {
-        heading: 'Example Alert',
-        content: 'Example alert content...',
-        severity: 2
-    };
+    const alertResponse = await fetch('/api/read_alert', { signal });
+    const { alert } = await alertResponse.json();
 
     return { nodes, alert };
 }

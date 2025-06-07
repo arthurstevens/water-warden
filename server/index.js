@@ -34,8 +34,11 @@ app.post('/api/simulate', async (req, res) => {
     const data = req.body;
 
     // Checking for empty required fields
-    if (!data || !data.nodeid || !data.timestamp || !data.flowrate || !data.pressure || !data.battery || !data.temperature) {
-        return res.status(400).json({ message: "Missing required fields", data: data });
+    if (!data || !data.nodeid || !data.timestamp || !data.flowrate || !data.pressure || !data.battery) {
+        const emptyFields = Object.keys(data).filter(key => !data[key]);
+        if (emptyFields.length > 0) {
+            return res.status(400).json({ message: "Missing required fields", emptyFields });
+        }
     }
 
     const client = new Client({
@@ -73,6 +76,49 @@ app.post('/api/simulate', async (req, res) => {
     }
 });
 
+app.get('/api/read_alert', async (req, res) => {
+    const client = new Client({
+        host: process.env.PG_HOST,
+        port: process.env.PG_PORT,
+        user: process.env.PG_USER,
+        password: process.env.PG_PASSWORD,
+        database: process.env.PG_DATABASE,
+        ssl: false,
+    });
+
+    try {
+        await client.connect();
+
+        await client.query(`SET search_path TO "amanzi-warden";`);
+
+        const query = `
+            SELECT announcementLog.announcementID, announcementLog.expiry, announcementPresets.heading, announcementPresets.content
+            FROM announcementLog LEFT JOIN announcementPresets
+            ON announcementPresets.announcementID=announcementLog.announcementID
+            WHERE initialTime < NOW() AND expiry > NOW();
+        `;
+
+        const result = await client.query(query);
+
+        const formatted = result.rows.map(row => {
+            return {
+                id: row.announcementid,
+                expiry: row.expiry,
+                heading: row.heading,
+                content: row.content,
+                severity: 2,
+            };
+        });
+        
+        res.setHeader('Content-Type', 'application/json');
+        res.json({alert: formatted[0] || null});
+    } catch  (err) {
+        console.error("DB connection error:", err);
+        res.status(500).json({ error: "Database connection failed" });
+    } finally {
+        client.end();
+    }
+})
 
 app.get('/api/read', async (req, res) => {
     const client = new Client({
