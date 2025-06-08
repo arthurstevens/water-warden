@@ -8,7 +8,7 @@ import {
     updateErrorContent,
     setTableFilterColumns
 } from './dom.js'; 
-import { formatTime } from './utils.js';
+import { exportToCSV, formatTime } from './utils.js';
 
 // Configuration
 const NODE_DATA_REFRESH_INTERVAL = 5_000;
@@ -133,6 +133,13 @@ function setTableFilter() {
 
 filterText.addEventListener('input', setTableFilter) // Add debouncing?
 filterColumn.addEventListener('change', setTableFilter)
+
+// CSV export
+document.getElementById('export-csv-button').addEventListener('click', () => {
+    const cached = localStorage.getItem('nodeData');
+    const data = JSON.parse(cached);
+    exportToCSV(data.nodes, nodeFilter);
+});
 
 updateLastUpdated(null);
 restoreFromCache();

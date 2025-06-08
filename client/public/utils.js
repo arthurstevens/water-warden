@@ -13,6 +13,35 @@ export function filterNodes(nodes, filter) {
     });
 }
 
+export function exportToCSV(nodes, filter) {
+    nodes = filterNodes(nodes, filter);
+    const CSVRows = []
+
+    // Headers
+    const headers = Object.keys(nodes[0]);
+    CSVRows.push(headers.join(','));
+
+    // Nodes
+    for (const node of nodes) {
+        const values = headers.map(header => {
+            const val = node[header];
+            return typeof val === 'string' ? val.replace(',','') : val;
+        });
+
+        CSVRows.push(values.join(','));
+    }
+
+    // Create BLOB
+    console.info(CSVRows);
+    const CSVBlob = new Blob([CSVRows.join('\n')], { type: 'text/csv' })
+    const url = URL.createObjectURL(CSVBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'node-data-' + getDateText();
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
 // Returns time since a given data object as <x><s,m,h> ago
 export function formatTime(date) {
     if (!date) return 'Never';
@@ -34,4 +63,17 @@ export function toTitleCase(str) {
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
+}
+
+function getDateText() {
+    const current = new Date;
+
+    const year = current.getFullYear();
+    const month = String(current.getMonth() + 1).padStart(2, '0'); 
+    const day = String(current.getDate()).padStart(2, '0');
+    const hour = String(current.getHours()).padStart(2, '0');
+    const minute = String(current.getMinutes()).padStart(2, '0');
+    const second = String(current.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day}-${hour}-${minute}-${second}`
 }
