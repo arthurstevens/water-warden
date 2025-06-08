@@ -144,6 +144,7 @@ export function updateErrorContent(alert) {
     }[alert.processing];
 }
 
+// Sets up column selections for filtering node table
 export function setTableFilterColumns(nodes) {
     const filterColumnSelection = document.getElementById('node-filter-column');
     const headers = Object.keys(nodes[0]);

@@ -1,12 +1,18 @@
-// Applies a filter to a set of nodes
+import { formatValue } from './nodeFormatter.js'
+
+// Applies a filter to a set of nodes with respect to formatted values
 export function filterNodes(nodes, filter) {
     if (!filter || !filter.column || !filter.value) return nodes;
-
+    
     return nodes.filter(node => {
-        const field = node[filter.column];
-        return field?.toString().toLowerCase().includes(filter.value.toLowerCase());
+        let field = formatValue(filter.column, node[filter.column]); // Get field value as formatted for client
+        return field
+            ?.toString()
+            ?.toLowerCase()
+            ?.includes(filter.value.toLowerCase()) ?? false;
     });
 }
+
 // Returns time since a given data object as <x><s,m,h> ago
 export function formatTime(date) {
     if (!date) return 'Never';

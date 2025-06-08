@@ -119,8 +119,8 @@ const filterText = document.getElementById('node-filter-text');
 const filterColumn = document.getElementById('node-filter-column');
 
 function setTableFilter() {
-    const column = document.getElementById('node-filter-column').value;
-    const value = document.getElementById('node-filter-text').value;
+    const column = filterColumn.value;
+    const value = filterText.value;
 
     nodeFilter = { column, value };
 
