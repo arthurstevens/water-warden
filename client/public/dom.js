@@ -92,32 +92,36 @@ export function updateAlertContent(alerts) {
     alertsContainer.innerHTML = '';
 
     // Set message if no alerts provided
-    if (!alerts || Object.keys(alerts).length === 0) {
+    if (!alerts || alerts.length === 0) {
         alerts = [{
                 heading: 'Nothing New', 
                 content: 'There are no active alerts or announcements.', 
                 severity: 1 
-            }];
+        }];
     }
     
-
     for (const alert of alerts) {
-
-        // Create elements
+        // Initialise elements and relationships
         const alertContainer = document.createElement('section');
         const alertImage = document.createElement('img');
         const alertHeading = document.createElement('p');
         const alertContent = document.createElement('p');
         alertContainer.className = "w-full flex items-center gap-3 p-3 w-full border-solid border-2 rounded-lg";
         alertImage.className = "w-5 h-5";
-        alertHeading.className = "font-bold";
+        alertHeading.className = "font-bold sm:text-nowrap";
+        alertContent.className = "w-full";
         alertContainer.appendChild(alertImage);
         alertContainer.appendChild(alertHeading);
         alertContainer.appendChild(alertContent);
         
+        // Format times
+        alert.initialTime = new Date(alert.initialTime);
+        alert.expiry = new Date(alert.expiry);
+        const alertHTMLContent = `${alert.content}<br><hr><i>${alert.initialTime.toLocaleString()} → ${alert.expiry.toLocaleString()}</i>` 
+
         // Set text content
         alertHeading.textContent = alert.heading + ':';
-        alertContent.textContent = alert.content;
+        alertContent.innerHTML = alertHTMLContent;
 
         // Severity style mapping
         const styleMap = {
@@ -128,7 +132,6 @@ export function updateAlertContent(alerts) {
         };
 
         // Apply style classes and set image
-        console.log(alert);
         const style = styleMap[alert.severity];
         alertContainer.classList.add(`border-${style.colour}-600`, `bg-${style.colour}-50`);
         alertHeading.classList.add(`text-${style.colour}-800`);

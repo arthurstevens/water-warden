@@ -68,21 +68,12 @@ async function updateDashboard() {
         updateConnectedStatusContent(false);
         updateErrorContent({
             heading: 'Error',
-            content: `Failed to fetch node data, using outdated cached data. Retrying in ${NODE_DATA_REFRESH_INTERVAL}ms.`,
+            content: `Failed to fetch data, displaying old cached data. Retrying in ${NODE_DATA_REFRESH_INTERVAL}ms.`,
             processing: false
         });
         wasDashboardRefresh = false;
 
-        // Attempt to use cached data
-        const cached = localStorage.getItem(CACHE_KEY);
-        if (cached) {
-            const data = JSON.parse(cached);
-            updateKPIContent(data.nodes);
-            updateTableContent(data.nodes);
-            updateAlertContent(data.alert);
-            console.warn('Falling back to cached data.');
-        }
-
+        restoreFromCache();
         console.error('Error refreshing data', error);
     } 
 }
@@ -103,11 +94,16 @@ function restoreFromCache() {
     const cached = localStorage.getItem(CACHE_KEY);
     const timestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
     if (cached && timestamp) {
-        const age = Date.now() - new Date(timestamp).getTime();
         const data = JSON.parse(cached);
+
+        // Ignore expired alerts
+        data.alerts = data.alerts.filter(alert => {
+            return new Date().toISOString() < alert.expiry;
+        })
+
         updateKPIContent(data.nodes);
         updateTableContent(data.nodes);
-        updateAlertContent(data.alert);
+        updateAlertContent(data.alerts);
         lastUpdate = new Date(timestamp);
         console.info('Loaded dashboard from cache.');
     }
@@ -142,6 +138,5 @@ document.getElementById('export-csv-button').addEventListener('click', () => {
 });
 
 updateLastUpdated(null);
-restoreFromCache();
 startDashboardLoop();
 setInterval(updateLastUpdated, LAST_UPDATED_REFRESH_INTERVAL);
