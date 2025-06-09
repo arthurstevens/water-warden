@@ -49,7 +49,7 @@ async function updateDashboard() {
         updateConnectedStatusContent(true);
         updateKPIContent(nodeData.nodes);
         updateTableContent(nodeData.nodes, nodeFilter);
-        updateAlertContent(nodeData.alert)
+        updateAlertContent(nodeData.alerts)
         if (firstFetch) {
             setTableFilterColumns(nodeData.nodes);
             firstFetch = false;
@@ -68,7 +68,7 @@ async function updateDashboard() {
         updateConnectedStatusContent(false);
         updateErrorContent({
             heading: 'Error',
-            content: `Failed to fetch node data, retrying in ${NODE_DATA_REFRESH_INTERVAL}ms.`,
+            content: `Failed to fetch node data, using outdated cached data. Retrying in ${NODE_DATA_REFRESH_INTERVAL}ms.`,
             processing: false
         });
         wasDashboardRefresh = false;

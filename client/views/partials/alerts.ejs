@@ -10,14 +10,14 @@
 </section>
 
 <%# Alerts %>
-<section id="alert-container">
-  <%# Temporary loading message %>
+<section id="alerts-container" class="flex flex-col gap-3 mb-6">
+  <%# Temporary loading message, client JS dynamically generates alerts %>
   <section  class="w-full mb-6 flex items-center gap-3 p-3 w-full bg-gray-50 border-solid border-2 border-gray-600 rounded-lg">
-    <img id="alert-img" src="assets/loading-icon.svg" alt="Alert indicator" class="w-5 h-5">
+    <img src="assets/loading-icon.svg" alt="Alert indicator" class="w-5 h-5">
     <div class="w-full">
       <div class="flex gap-1">
-        <p id="alert-heading" class="text-gray-800 font-bold">Loading Dashboard:</p>
-        <p id="alert-content" class="text-gray-800">Awaiting response from server.</p>
+        <p class="text-gray-800 font-bold">Loading Dashboard:</p>
+        <p class="text-gray-800">Awaiting response from server.</p>
       </div>
     </div>
   </section>

@@ -86,37 +86,58 @@ export function updateLastUpdatedContent(lastUpdatedText) {
 } 
 
 // Updates alert content, image, and styling 
-export function updateAlertContent(alert) {
-    const alertContainer = document.getElementById('alert-container');
-    const alertImage = document.getElementById('alert-img');
-    const alertHeading = document.getElementById('alert-heading');
-    const alertContent = document.getElementById('alert-content');
+export function updateAlertContent(alerts) {
+    console.log(alerts);
+    const alertsContainer = document.getElementById('alerts-container');
+    alertsContainer.innerHTML = '';
 
-    // Set text content
-    alertHeading.textContent = alert.heading + ':';
-    alertContent.textContent = alert.content;
+    // Set message if no alerts provided
+    if (!alerts || Object.keys(alerts).length === 0) {
+        alerts = [{
+                heading: 'Nothing New', 
+                content: 'There are no active alerts or announcements.', 
+                severity: 1 
+            }];
+    }
+    
 
-    // Severity style mapping
-    const styleMap = {
-        0 : { colour: 'gray', img: 'loading-icon.svg'},
-        1 : { colour: 'green', img: 'status-ok-icon.svg'},
-        2 : { colour: 'yellow', img: 'status-warning-icon.svg'},
-        3 : { colour: 'red', img: 'status-warning-icon.svg'}
-    };
+    for (const alert of alerts) {
 
-    // Remove any existing style classes
-    for (const { colour } of Object.values(styleMap)) {
-        alertContainer.classList.remove(`border-${colour}-600`, `bg-${colour}-50`);
-        alertHeading.classList.remove(`text-${colour}-800`);
-        alertContent.classList.remove(`text-${colour}-800`);
+        // Create elements
+        const alertContainer = document.createElement('section');
+        const alertImage = document.createElement('img');
+        const alertHeading = document.createElement('p');
+        const alertContent = document.createElement('p');
+        alertContainer.className = "w-full flex items-center gap-3 p-3 w-full border-solid border-2 rounded-lg";
+        alertImage.className = "w-5 h-5";
+        alertHeading.className = "font-bold";
+        alertContainer.appendChild(alertImage);
+        alertContainer.appendChild(alertHeading);
+        alertContainer.appendChild(alertContent);
+        
+        // Set text content
+        alertHeading.textContent = alert.heading + ':';
+        alertContent.textContent = alert.content;
+
+        // Severity style mapping
+        const styleMap = {
+            0 : { colour: 'gray', img: 'loading-icon.svg'},
+            1 : { colour: 'green', img: 'status-ok-icon.svg'},
+            2 : { colour: 'yellow', img: 'status-warning-icon.svg'},
+            3 : { colour: 'red', img: 'status-warning-icon.svg'}
+        };
+
+        // Apply style classes and set image
+        console.log(alert);
+        const style = styleMap[alert.severity];
+        alertContainer.classList.add(`border-${style.colour}-600`, `bg-${style.colour}-50`);
+        alertHeading.classList.add(`text-${style.colour}-800`);
+        alertContent.classList.add(`text-${style.colour}-800`);
+        alertImage.src = `/assets/${style.img}`;
+
+        alertsContainer.appendChild(alertContainer);
     }
 
-    // Apply new style classes
-    const style = styleMap[alert.severity];
-    alertContainer.classList.add(`border-${style.colour}-600`, `bg-${style.colour}-50`);
-    alertHeading.classList.add(`text-${style.colour}-800`);
-    alertContent.classList.add(`text-${style.colour}-800`);
-    alertImage.src = `/assets/${style.img}`;
 }
 
 // Updates error content
