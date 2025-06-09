@@ -87,7 +87,6 @@ export function updateLastUpdatedContent(lastUpdatedText) {
 
 // Updates alert content, image, and styling 
 export function updateAlertContent(alerts) {
-    console.log(alerts);
     const alertsContainer = document.getElementById('alerts-container');
     alertsContainer.innerHTML = '';
 
