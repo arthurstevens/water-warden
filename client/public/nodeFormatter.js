@@ -9,6 +9,11 @@ export function formatValue(key, value) {
             3: 'Critical'
         }[value] ?? 'Unknown';
     }
+    if (key === 'timestamp') {
+        return value
+            .replace('T', ' ')
+            .split('.')[0];
+    }
     if (key === 'flowrate') return `${value} L/min`;
     if (key === 'pressure') return `${value} bar`;
     if (key === 'battery') return `${value}%`;
