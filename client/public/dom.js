@@ -95,7 +95,9 @@ export function updateAlertContent(alerts) {
         alerts = [{
                 heading: 'Nothing New', 
                 content: 'There are no active alerts or announcements.', 
-                severity: 1 
+                severity: 1,
+                initialTime: null,
+                expiry: null
         }];
     }
     
@@ -113,10 +115,14 @@ export function updateAlertContent(alerts) {
         alertContainer.appendChild(alertHeading);
         alertContainer.appendChild(alertContent);
         
-        // Format times
-        alert.initialTime = new Date(alert.initialTime);
-        alert.expiry = new Date(alert.expiry);
-        const alertHTMLContent = `${alert.content}<br><hr><i>${alert.initialTime.toLocaleString()} → ${alert.expiry.toLocaleString()}</i>` 
+        // Format content
+        let alertHTMLContent = alert.content;
+
+        if (alert.initialTime && alert.expiry) {
+            alert.initialTime = new Date(alert.initialTime);
+            alert.expiry = new Date(alert.expiry);
+            alertHTMLContent += `<br><hr><i>${alert.initialTime.toLocaleString()} → ${alert.expiry.toLocaleString()}</i>`;
+        }
 
         // Set text content
         alertHeading.textContent = alert.heading + ':';
