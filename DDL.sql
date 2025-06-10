@@ -80,7 +80,7 @@ INSERT INTO announcementLog (announcementID, userID, initialTime, expiry, create
 (2, 1, '2025-06-06 13:25:00', '2025-06-09 12:00:00', NOW());
 
 -- View
-CREATE OR REPLACE VIEW nodeView AS SELECT node.name, nodeLog.timestamp, nodeLog.flowRate, nodeLog.pressure, nodeLog.battery, nodeLog.temperature, nodeLog.turbidity, nodeLog.totalDissolvedSolids FROM node LEFT JOIN nodeLog ON node.id = nodeLog.nodeID;
+CREATE OR REPLACE VIEW nodeView AS SELECT node.id, node.name, node.latitude, node.longitude, nodeLog.timestamp, nodeLog.flowRate, nodeLog.pressure, nodeLog.battery, nodeLog.temperature, nodeLog.turbidity, nodeLog.totalDissolvedSolids FROM node LEFT JOIN nodeLog ON node.id = nodeLog.nodeID;
 
 -- Test query
 SELECT announcementLog.announcementID, announcementLog.expiry, announcementPresets.heading, announcementPresets.content FROM announcementLog LEFT JOIN announcementPresets ON announcementPresets.announcementID=announcementLog.announcementID WHERE initialTime < NOW() AND expiry > NOW();
