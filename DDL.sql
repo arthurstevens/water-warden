@@ -21,8 +21,8 @@ CREATE TABLE IF NOT EXISTS node (
 );
 
 CREATE TABLE IF NOT EXISTS nodeLog (
-    id INT,
-    timeStamp TIMESTAMP NOT NULL,
+    nodeID INT,
+    timestamp TIMESTAMP NOT NULL,
     flowRate REAL NOT NULL,
     pressure REAL NOT NULL,
     battery REAL NOT NULL,
@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS nodeLog (
     turbidity REAL,
     totalDissolvedSolids REAL,
     CONSTRAINT fk_nodeLog_id FOREIGN KEY (id) REFERENCES node(id)
+    PRIMARY KEY(nodeID, timestamp)
 );
 
 
