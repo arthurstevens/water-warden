@@ -8,21 +8,21 @@ import requests
 while True:
     if random.randint(1,2) == 1:
         data = {
-            "nodeid": 1,
+            "nodeid": random.randint(1,1),
             "timestamp": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
-            "flowrate": random.randint(0,20),
-            "pressure": round(random.uniform(0.75,1.25),2),
+            "flowrate": random.randint(10,20),
+            "pressure": round(random.uniform(1,10),2),
             "battery": random.randint(1,100),
-            "temperature": round(random.uniform(10.0,30.0),1),
-            "turbidity": round(random.uniform(0.0,10.0),1),
-            "totaldissolvedsolids": round(random.uniform(0.0,10.0),1)
+            "temperature": round(random.uniform(10,35),1),
+            "turbidity": round(random.uniform(0,5),1),
+            "totaldissolvedsolids": round(random.randint(0,1400),1)
         }
     else:
         data = {
             "nodeid": random.randint(2,2),
             "timestamp": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
-            "flowrate": random.randint(0,20),
-            "pressure": round(random.uniform(0.75,1.25),2),
+            "flowrate": random.randint(10,20),
+            "pressure": round(random.uniform(1,10),2),
             "battery": random.randint(1,100),
             "temperature": None,
             "turbidity": None,
@@ -37,6 +37,6 @@ while True:
 
     print(f"Response: {response.status_code} {response.text}")
     
-    break
+    # break
     time.sleep(5)
 
