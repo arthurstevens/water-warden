@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS announcementLog (
     announcementID INT NOT NULL REFERENCES announcementPresets(id)
         ON DELETE RESTRICT
         ON UPDATE CASCADE,
-    userID INT NOT NULL REFERENCES user(id)
+    userID INT NOT NULL REFERENCES users(id)
         ON DELETE RESTRICT
         ON UPDATE CASCADE,
     initialTime TIMESTAMP NOT NULL,
@@ -123,6 +123,14 @@ FROM nodeLog nl
 JOIN node n ON n.ID = nl.nodeID
 ORDER BY nl.nodeID, nl.timestamp DESC;
 
+-- Active announcements
+CREATE OR REPLACE VIEW activeAnnouncements AS
+SELECT ap.heading, ap.content, al.initialTime, al.expiry, al.severity
+FROM announcementLog al
+JOIN announcementPresets ap ON ap.id = al.announcementID
+WHERE al.expiry > NOW()
+ORDER BY al.initialTime ASC;
+
 -- ============================================================================
 -- INDEX DEFINITIONS
 -- ============================================================================
@@ -163,7 +171,7 @@ INSERT INTO announcementLog (announcementID, userID, initialTime, expiry, create
 (2, 1, '2025-06-06 13:25:00', '2025-06-09 12:00:00', NOW());
 
 -- Test query
-SELECT announcementLog.announcementID, announcementLog.expiry, announcementPresets.heading, announcementPresets.content 
-FROM announcementLog 
-LEFT JOIN announcementPresets ON announcementPresets.announcementID=announcementLog.announcementID 
-WHERE initialTime < NOW() AND expiry > NOW();
+SELECT al., al.expiry, ap.heading, ap.content 
+FROM announcementLog al
+LEFT JOIN announcementPresets ap ON ap.id = al.announcementID 
+WHERE expiry > NOW();
