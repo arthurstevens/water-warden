@@ -29,15 +29,16 @@ CREATE TABLE IF NOT EXISTS nodeLog (
     temperature REAL,
     turbidity REAL,
     totalDissolvedSolids REAL,
-    CONSTRAINT fk_nodeLog_id FOREIGN KEY (id) REFERENCES node(id)
+    CONSTRAINT fk_nodeLog_nodeID FOREIGN KEY (nodeID) REFERENCES node(id)
     PRIMARY KEY(nodeID, timestamp)
 );
-
 
 -- Adjacency table
 CREATE TABLE IF NOT EXISTS nodeAdjacency (
 	mainNodeID INT,
 	childNodeID INT,
+    CONSTRAINT fk_nodeAdjacency_mainNodeID FOREIGN KEY (mainNodeID) REFERENCES node(id),
+    CONSTRAINT fk_nodeAdjacency_childNodeID FOREIGN KEY (childNodeID) REFERENCES node(id),
 	PRIMARY KEY (mainNodeID, childNodeID)
 );
 
