@@ -28,6 +28,12 @@ DROP TABLE IF EXISTS announcementLog CASCADE;
 DROP TABLE IF EXISTS announcementPresets CASCADE;
 
 -- ============================================================================
+-- ENUMS
+-- ============================================================================
+
+CREATE TYPE user_role AS ENUM ('admin', 'user');
+
+-- ============================================================================
 -- TABLE DEFINITIONS
 -- ============================================================================
 
@@ -71,8 +77,7 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(255) UNIQUE NOT NULL,
     passwordHash TEXT NOT NULL,
-    role VARCHAR(50) NOT NULL DEFAULT 'user' 
-        CHECK (role IN ('admin', 'user')),
+    role user_role NOT NULL DEFAULT 'user',
     createdDate TIMESTAMP DEFAULT NOW()
 );
 
