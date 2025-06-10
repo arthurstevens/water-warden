@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS node (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     latitude REAL NOT NULL,
-    longitude REAL NOT NULL
+    longitude REAL NOT NULL,
+    createdDate TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS nodeLog (
@@ -41,7 +42,7 @@ CREATE TABLE IF NOT EXISTS nodeAdjacency (
 
 -- Announcement tables
 CREATE TABLE IF NOT EXISTS announcementPresets (
-    announcementID SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     heading VARCHAR(255) NOT NULL,
     content VARCHAR(255) NOT NULL
 );
@@ -56,12 +57,21 @@ CREATE TABLE IF NOT EXISTS alertLog (
 );
 
 CREATE TABLE IF NOT EXISTS announcementLog (
-    announcementID INT,
-    userID INT NOT NULL,
+    announcementID INT REFERENCES announcementPresets(id),
+    userID INT NOT NULL
     initialTime TIMESTAMP NOT NULL,
     expiry TIMESTAMP NOT NULL,
-    createdDate TIMESTAMP NOT NULL,
+    createdDate TIMESTAMP DEFAULT NOW(),
     CONSTRAINT fk_announcementLog_announcementID FOREIGN KEY (announcementID) REFERENCES announcementPresets(announcementID)
+);
+
+-- Users
+CREATE TABLE user (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    passwordHash TEXT NOT NULL,
+    role VARCHAR(50) NOT NULL CHECK (role IN ('admin', 'user')),
+    createdDate TIMESTAMP DEFAULT NOW()
 );
 
 -- View
