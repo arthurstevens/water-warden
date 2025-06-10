@@ -2,27 +2,36 @@ ROLLBACK;
 
 DROP SCHEMA IF EXISTS "amanzi-warden" CASCADE;
 
-CREATE SCHEMA "amanzi-warden";
+CREATE SCHEMA IF NOT EXISTS "amanzi-warden";
 SET search_path TO "amanzi-warden";
+
+DROP TABLE IF EXISTS node CASCADE;
+DROP TABLE IF EXISTS nodeLog CASCADE;
+DROP TABLE IF EXISTS alertLog CASCADE;
+DROP TABLE IF EXISTS nodeAdjacency CASCADE;
+DROP TABLE IF EXISTS announcementLog CASCADE;
+DROP TABLE IF EXISTS announcementPresets CASCADE;
 
 -- Node tables
 CREATE TABLE IF NOT EXISTS node (
-    nodeID SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     latitude REAL NOT NULL,
     longitude REAL NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS nodeLog (
-    nodeID INT REFERENCES node(nodeID),
-    timestamp TIMESTAMP NOT NULL,
+    id INT,
+    timeStamp TIMESTAMP NOT NULL,
     flowRate REAL NOT NULL,
     pressure REAL NOT NULL,
     battery REAL NOT NULL,
     temperature REAL,
     turbidity REAL,
-    totalDissolvedSolids REAL
+    totalDissolvedSolids REAL,
+    CONSTRAINT fk_nodeLog_id FOREIGN KEY (id) REFERENCES node(id)
 );
+
 
 -- Adjacency table
 CREATE TABLE IF NOT EXISTS nodeAdjacency (
@@ -38,45 +47,37 @@ CREATE TABLE IF NOT EXISTS announcementPresets (
     content VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS alertLog (
+    nodeID INT,
+    timestamp TIMESTAMP NOT NULL,
+    reason VARCHAR(255),
+    severity INT NOT NULL,
+    CONSTRAINT fk_alertLog_nodeID FOREIGN KEY (nodeID) REFERENCES node(id)
+);
+
 CREATE TABLE IF NOT EXISTS announcementLog (
     announcementID INT,
     userID INT NOT NULL,
     initialTime TIMESTAMP NOT NULL,
     expiry TIMESTAMP NOT NULL,
     createdDate TIMESTAMP NOT NULL,
-    severity 
     CONSTRAINT fk_announcementLog_announcementID FOREIGN KEY (announcementID) REFERENCES announcementPresets(announcementID)
 );
 
-CREATE TABLE IF NOT EXISTS alertLog (
-    nodeID SERIAL,
-    timestamp TIMESTAMP NOT NULL,
-    reason VARCHAR(255),
-    severity INT NOT NULL,
-    CONSTRAINT fk_alertLog_nodeID FOREIGN KEY (nodeID) REFERENCES nodeName(nodeID)
-);
-
-
 INSERT INTO node (name, latitude, longitude) VALUES
-('Some Area A', 28.52955, 30.26594),
-('Other Zone B', 29.52955, 29.26594);
+('Node001', 28.52955, 30.26594),
+('Node002', 29.52955, 29.26594);
 
 INSERT INTO announcementPresets (heading, content) VALUES
-('Test Announcement 1', 'Example test announcement 1'),
-('Test Announcement 2', 'Example test announcement 2');
+('Test Announcement', 'This is a test announcement'),
+('Test Announcement 2', 'This is a second test announcement');
 
 INSERT INTO announcementLog (announcementID, userID, initialTime, expiry, createdDate) VALUES
 (1, 1, '2025-06-07 13:25:00', '2025-06-08 12:00:00', NOW()),
 (2, 1, '2025-06-06 13:25:00', '2025-06-09 12:00:00', NOW());
 
 -- View
-CREATE OR REPLACE VIEW nodeView 
-AS SELECT n.name, nl.timestamp, nl.flowRate, nl.pressure, nl.battery, nl.temperature, nl.turbidity, nl.totalDissolvedSolids 
-FROM node n
-LEFT JOIN nodeLog nl ON n.nodeID = nl.nodeID;
+CREATE OR REPLACE VIEW nodeView AS SELECT node.name, nodeLog.timestamp, nodeLog.flowRate, nodeLog.pressure, nodeLog.battery, nodeLog.temperature, nodeLog.turbidity, nodeLog.totalDissolvedSolids FROM node LEFT JOIN nodeLog ON node.id = nodeLog.nodeID;
 
 -- Test query
-SELECT al.announcementID, al.expiry, ap.heading, ap.content 
-FROM announcementLog al
-LEFT JOIN announcementPresets ap ON ap.announcementID=al.announcementID 
-WHERE expiry > NOW();
+SELECT announcementLog.announcementID, announcementLog.expiry, announcementPresets.heading, announcementPresets.content FROM announcementLog LEFT JOIN announcementPresets ON announcementPresets.announcementID=announcementLog.announcementID WHERE initialTime < NOW() AND expiry > NOW();
