@@ -97,14 +97,14 @@ app.get('/api/read_alert', async (req, res) => {
             return {
                 heading: row.heading,
                 content: row.content,
-                severity: 2,
+                severity: row.severity,
                 initialtime: row.initialtime,
                 expiry: row.expiry
             };
         });
         
         res.setHeader('Content-Type', 'application/json');
-        res.json({alert: formatted[0] || null});
+        res.json({alerts: formatted || null});
     } catch  (err) {
         console.error("DB connection error:", err);
         res.status(500).json({ error: "Database connection failed" });
@@ -147,7 +147,7 @@ app.get('/api/read', async (req, res) => {
         });
 
         res.setHeader('Content-Type', 'application/json');
-        res.json({nodes: formatted});
+        res.json({nodes: formatted || null});
     } catch (err) {
         console.error("Caught error:", err);
         res.status(500).send("Internal Server Error");
