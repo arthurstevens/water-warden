@@ -1,3 +1,15 @@
+-- ============================================================================
+-- Project Name : Amanzi Warden
+-- File Name    : DDL.sql
+-- Description  : Defines the database schema in entirety. Comprised of tables 
+--				  and their constraints, functions, triggers, views, and 
+--				  indexes.
+--                Additionally contains some seed data at the base.
+-- Created On   : 2025-06-04
+-- Last Altered : 2025-06-10
+-- NOTE         : N/A
+-- ============================================================================
+
 ROLLBACK;
 
 DROP SCHEMA IF EXISTS "amanzi-warden" CASCADE;
@@ -33,7 +45,7 @@ CREATE TABLE IF NOT EXISTS nodeLog (
     PRIMARY KEY(nodeID, timestamp)
 );
 
--- Adjacency table
+-- Node adjacency table
 CREATE TABLE IF NOT EXISTS nodeAdjacency (
 	mainNodeID INT REFERENCES node(id),
 	childNodeID INT REFERENCES node(id),
