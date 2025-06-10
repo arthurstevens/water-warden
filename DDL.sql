@@ -34,9 +34,9 @@ DROP TABLE IF EXISTS announcementPresets CASCADE;
 -- Node table: stores node metadata
 CREATE TABLE IF NOT EXISTS node (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    latitude REAL NOT NULL,
-    longitude REAL NOT NULL,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    latitude NUMERIC(8,5) NOT NULL,
+    longitude NUMERIC(8,5) NOT NULL,
     createdDate TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
@@ -66,18 +66,21 @@ CREATE TABLE IF NOT EXISTS nodeAdjacency (
 	PRIMARY KEY (mainNodeID, childNodeID)
 );
 
--- Announcement presets table
-CREATE TABLE IF NOT EXISTS announcementPresets (
+-- User table: currently only for access to admin panel
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    heading VARCHAR(50) NOT NULL,
-    content VARCHAR(255) NOT NULL
+    username VARCHAR(255) UNIQUE NOT NULL,
+    passwordHash TEXT NOT NULL,
+    role VARCHAR(50) NOT NULL DEFAULT 'user' 
+        CHECK (role IN ('admin', 'user')),
+    createdDate TIMESTAMP DEFAULT NOW()
 );
 
 -- Announcement logs: records active and expired announcements and the user that triggered it
 CREATE TABLE IF NOT EXISTS announcementLog (
-    announcementID INT NOT NULL REFERENCES announcementPresets(id)
-        ON DELETE RESTRICT
-        ON UPDATE CASCADE,
+    id SERIAL PRIMARY KEY,
+	heading VARCHAR(50) NOT NULL,
+    content VARCHAR(255) NOT NULL,
     userID INT NOT NULL REFERENCES users(id)
         ON DELETE RESTRICT
         ON UPDATE CASCADE,
@@ -85,8 +88,7 @@ CREATE TABLE IF NOT EXISTS announcementLog (
     expiry TIMESTAMP NOT NULL,
     createdDate TIMESTAMP DEFAULT NOW(),
     severity INT NOT NULL 
-        CHECK (severity IN (0, 1, 2, 3)),
-    PRIMARY KEY(announcementID, userID, createdDate)
+        CHECK (severity IN (0, 1, 2, 3))
 );
 
 -- Alert logs: stores flags for nodes with abnormal readings
@@ -101,16 +103,6 @@ CREATE TABLE IF NOT EXISTS alertLog (
         CHECK (severity IN (2, 3))
 );
 
--- User table: currently only for access to admin panel
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(255) UNIQUE NOT NULL,
-    passwordHash TEXT NOT NULL,
-    role VARCHAR(50) NOT NULL 
-        CHECK (role IN ('admin', 'user')),
-    createdDate TIMESTAMP DEFAULT NOW()
-);
-
 -- ============================================================================
 -- VIEWS DEFINITIONS
 -- ============================================================================
@@ -118,18 +110,17 @@ CREATE TABLE users (
 -- Most recent data recordings from each node
 CREATE OR REPLACE VIEW latestNodeView AS 
 SELECT DISTINCT ON (nl.nodeID)
-n.id AS nodeID, n.name, nl.flowRate, nl.pressure, nl.temperature, nl.turbidity, nl.totalDissolvedSolids AS tds, nl.timestamp, n.longitude, n.latitude, n.battery
+n.id AS nodeID, n.name, nl.flowRate, nl.pressure, nl.temperature, nl.turbidity, nl.totalDissolvedSolids AS tds, nl.timestamp, n.longitude, n.latitude, nl.battery
 FROM nodeLog nl
 JOIN node n ON n.ID = nl.nodeID
 ORDER BY nl.nodeID, nl.timestamp DESC;
 
 -- Active announcements
 CREATE OR REPLACE VIEW activeAnnouncements AS
-SELECT ap.heading, ap.content, al.initialTime, al.expiry, al.severity
-FROM announcementLog al
-JOIN announcementPresets ap ON ap.id = al.announcementID
-WHERE al.expiry > NOW()
-ORDER BY al.initialTime ASC;
+SELECT heading, content, initialTime, expiry, severity
+FROM announcementLog
+WHERE expiry > NOW()
+ORDER BY initialTime ASC;
 
 -- ============================================================================
 -- INDEX DEFINITIONS
@@ -162,16 +153,14 @@ INSERT INTO alertLog (nodeID, timestamp, reason, severity) VALUES
 (1, NOW() - INTERVAL '30 minutes', 'Low battery', 2),
 (2, NOW() - INTERVAL '45 minutes', 'High pressure', 3);
 
-INSERT INTO announcementPresets (heading, content) VALUES
-('Test Announcement 1', 'Test content 1'),
-('Test Announcement 2', 'Test content 2');
+INSERT INTO users (username, passwordHash) VALUES
+('user1', '123');
 
-INSERT INTO announcementLog (announcementID, userID, initialTime, expiry, createdDate) VALUES
-(1, 1, '2025-06-07 13:25:00', '2025-06-08 12:00:00', NOW()),
-(2, 1, '2025-06-06 13:25:00', '2025-06-09 12:00:00', NOW());
+INSERT INTO announcementLog (heading, content, userID, initialTime, expiry, severity) VALUES
+('Test Announcement 1', 'Test content 1 (active)', 1, '2025-06-07 13:25:00', NOW() + INTERVAL '1 day', 1),
+('Test Announcement 2', 'Test content 1 (active)', 1, '2025-06-06 13:25:00', NOW() + INTERVAL '2 day', 2),
+('Test Announcement 3', 'Test content 1 (inactive)', 1, '2025-06-07 13:25:00', NOW() - INTERVAL '1 day', 3),
+('Test Announcement 4', 'Test content 1 (inactive)', 1, '2025-06-06 13:25:00', NOW() - INTERVAL '2 day', 2);
 
 -- Test query
-SELECT al., al.expiry, ap.heading, ap.content 
-FROM announcementLog al
-LEFT JOIN announcementPresets ap ON ap.id = al.announcementID 
-WHERE expiry > NOW();
+SELECT * FROM activeAnnouncements;
