@@ -20,7 +20,17 @@ router.get('/', requireAdmin, (req, res) => {
 // Admin login page (unprotected)
 router.get('/login', (req, res) => {
   res.render('pages/admin/login', {
-    title: 'Admin Login'
+    title: 'Amanzi Warden',
+    login: {
+      heading: 'Admin Login',
+      sub: 'Usage limited to service administrators.'
+    },
+    footer: {
+      text: 'All rights reserved.',
+      email: 'someone@example.com',
+      emailText: 'Amanzi Warden',
+      year: new Date().getFullYear(),
+    }
   });
 });
 

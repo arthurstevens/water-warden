@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html>
-<head><title><%= title %></title></head>
-<body>
-  <h1>Admin Login</h1>
-  <form method="POST" action="/auth/login">
-    <input name="username" required>
-    <input name="password" type="password" required>
-    <button>Login</button>
-  </form>
+<html class="h-screen">
+<%- include('../../partials/head') %>
+<body class="bg-gray-50 h-screen flex flex-col">
+    <main class="flex flex-grow justify-center items-center h-screen w-full">
+        <%- include('../../partials/login') %>
+    </main>
+    <div class="flex justify-center w-full px-2 sm:px-6">
+        <hr class="max-w-7xl w-full border-0 h-px bg-gray-300">
+    </div>
+    <%- include('../../partials/footer') %>
 </body>
 </html>
