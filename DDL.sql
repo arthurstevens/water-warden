@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS announcementPresets (
 );
 
 CREATE TABLE IF NOT EXISTS alertLog (
+    id SERIAL PRIMARY KEY,
     nodeID INT,
     timestamp TIMESTAMP NOT NULL,
     reason VARCHAR(255),
