@@ -37,12 +37,14 @@ CREATE TABLE IF NOT EXISTS node (
     name VARCHAR(255) NOT NULL,
     latitude REAL NOT NULL,
     longitude REAL NOT NULL,
-    createdDate TIMESTAMP DEFAULT NOW()
+    createdDate TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 -- Node logs: stores time-sensitive data sent by node readings
 CREATE TABLE IF NOT EXISTS nodeLog (
-    nodeID INT REFERENCES node(id),
+    nodeID INT REFERENCES node(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
     timestamp TIMESTAMP NOT NULL,
     flowRate REAL NOT NULL,
     pressure REAL NOT NULL,
@@ -55,35 +57,42 @@ CREATE TABLE IF NOT EXISTS nodeLog (
 
 -- Node adjacency table: node connections list of direction mainNode -> childNode
 CREATE TABLE IF NOT EXISTS nodeAdjacency (
-	mainNodeID INT REFERENCES node(id),
-	childNodeID INT REFERENCES node(id),
+	mainNodeID INT NOT NULL REFERENCES node(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+	childNodeID INT NOT NULL REFERENCES node(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
 	PRIMARY KEY (mainNodeID, childNodeID)
 );
 
 -- Announcement presets table
 CREATE TABLE IF NOT EXISTS announcementPresets (
     id SERIAL PRIMARY KEY,
-    heading VARCHAR(255) NOT NULL,
+    heading VARCHAR(50) NOT NULL,
     content VARCHAR(255) NOT NULL
 );
 
 -- Announcement logs: records active and expired announcements and the user that triggered it
 CREATE TABLE IF NOT EXISTS announcementLog (
-    announcementID INT REFERENCES announcementPresets(id),
+    announcementID INT NOT NULL REFERENCES announcementPresets(id),
     userID INT NOT NULL,
     initialTime TIMESTAMP NOT NULL,
     expiry TIMESTAMP NOT NULL,
     createdDate TIMESTAMP DEFAULT NOW(),
+    severity INT NOT NULL 
+        CHECK (severity IN (0, 1, 2, 3)),
+    PRIMARY KEY(announcementID, userID, createdDate)
 );
 
 -- Alert logs: stores flags for nodes with abnormal readings
 CREATE TABLE IF NOT EXISTS alertLog (
     id SERIAL PRIMARY KEY,
-    nodeID INT,
+    nodeID INT REFERENCES 
     timestamp TIMESTAMP NOT NULL,
     reason VARCHAR(255),
-    severity INT NOT NULL,
-    CONSTRAINT fk_alertLog_nodeID FOREIGN KEY (nodeID) REFERENCES node(id)
+    severity INT NOT NULL
+        CHECK (severity IN (2, 3))
 );
 
 -- User table: currently only for access to admin panel
@@ -91,7 +100,8 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(255) UNIQUE NOT NULL,
     passwordHash TEXT NOT NULL,
-    role VARCHAR(50) NOT NULL CHECK (role IN ('admin', 'user')),
+    role VARCHAR(50) NOT NULL 
+        CHECK (role IN ('admin', 'user')),
     createdDate TIMESTAMP DEFAULT NOW()
 );
 
@@ -101,7 +111,8 @@ CREATE TABLE users (
 
 -- Most recent data recordings from each node.
 CREATE OR REPLACE VIEW latestNodeView AS 
-SELECT DISTINCT ON (nl.nodeID) nl.*, n.name, n.longitude, n.latitude
+SELECT DISTINCT ON (nl.nodeID)
+n.id AS nodeID, n.name, nl.flowRate, nl.pressure, nl.temperature, nl.turbidity, nl.totalDissolvedSolids AS tds, nl.timestamp, n.longitude, n.latitude, n.battery
 FROM nodeLog nl
 JOIN node n ON n.ID = nl.nodeID
 ORDER BY nl.nodeID, nl.timestamp DESC;
