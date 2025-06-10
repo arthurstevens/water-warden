@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS node (
 -- Node logs: stores time-sensitive data sent by node readings
 CREATE TABLE IF NOT EXISTS nodeLog (
     nodeID INT REFERENCES node(id)
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
         ON UPDATE CASCADE,
     timestamp TIMESTAMP NOT NULL,
     flowRate REAL NOT NULL,
@@ -64,10 +64,10 @@ CREATE TABLE IF NOT EXISTS nodeLog (
 -- Node adjacency table: node connections list of direction mainNode -> childNode
 CREATE TABLE IF NOT EXISTS nodeAdjacency (
 	mainNodeID INT NOT NULL REFERENCES node(id)
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
         ON UPDATE CASCADE,
 	childNodeID INT NOT NULL REFERENCES node(id)
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
         ON UPDATE CASCADE,
 	PRIMARY KEY (mainNodeID, childNodeID)
 );
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS announcementLog (
 	heading VARCHAR(50) NOT NULL,
     content VARCHAR(255) NOT NULL,
     userID INT NOT NULL REFERENCES users(id)
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
         ON UPDATE CASCADE,
     initialTime TIMESTAMP NOT NULL,
     expiry TIMESTAMP NOT NULL,
