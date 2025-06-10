@@ -75,8 +75,12 @@ CREATE TABLE IF NOT EXISTS announcementPresets (
 
 -- Announcement logs: records active and expired announcements and the user that triggered it
 CREATE TABLE IF NOT EXISTS announcementLog (
-    announcementID INT NOT NULL REFERENCES announcementPresets(id),
-    userID INT NOT NULL,
+    announcementID INT NOT NULL REFERENCES announcementPresets(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+    userID INT NOT NULL REFERENCES user(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
     initialTime TIMESTAMP NOT NULL,
     expiry TIMESTAMP NOT NULL,
     createdDate TIMESTAMP DEFAULT NOW(),
@@ -88,7 +92,9 @@ CREATE TABLE IF NOT EXISTS announcementLog (
 -- Alert logs: stores flags for nodes with abnormal readings
 CREATE TABLE IF NOT EXISTS alertLog (
     id SERIAL PRIMARY KEY,
-    nodeID INT REFERENCES 
+    nodeID INT REFERENCES node(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     timestamp TIMESTAMP NOT NULL,
     reason VARCHAR(255),
     severity INT NOT NULL
@@ -106,10 +112,10 @@ CREATE TABLE users (
 );
 
 -- ============================================================================
--- VIEWS
+-- VIEWS DEFINITIONS
 -- ============================================================================
 
--- Most recent data recordings from each node.
+-- Most recent data recordings from each node
 CREATE OR REPLACE VIEW latestNodeView AS 
 SELECT DISTINCT ON (nl.nodeID)
 n.id AS nodeID, n.name, nl.flowRate, nl.pressure, nl.temperature, nl.turbidity, nl.totalDissolvedSolids AS tds, nl.timestamp, n.longitude, n.latitude, n.battery
@@ -118,7 +124,17 @@ JOIN node n ON n.ID = nl.nodeID
 ORDER BY nl.nodeID, nl.timestamp DESC;
 
 -- ============================================================================
--- SEED
+-- INDEX DEFINITIONS
+-- ============================================================================
+
+-- Faster lookup for most recent node data
+CREATE INDEX nodeLog_timestamp ON nodeLog(timestamp);
+
+-- Faster lookup for expired announcements
+CREATE INDEX announcementLog_expiry ON announcementLog(expiry);
+
+-- ============================================================================
+-- SEED / TESTING
 -- ============================================================================
 
 INSERT INTO node (name, latitude, longitude) VALUES
