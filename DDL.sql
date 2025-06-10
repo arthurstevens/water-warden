@@ -137,6 +137,9 @@ CREATE INDEX nodeLog_timestamp ON nodeLog(timestamp);
 -- Faster lookup for expired announcements
 CREATE INDEX announcementLog_expiry ON announcementLog(expiry);
 
+-- Faster lookup for users
+CREATE INDEX users_username ON users(username);
+
 -- ============================================================================
 -- SEED / TESTING
 -- ============================================================================

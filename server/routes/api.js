@@ -99,15 +99,19 @@ router.get('/read', async (req, res) => {
         await client.connect();
         await client.query(`SET search_path TO "amanzi-warden";`);
 
-        const result = await client.query(`SELECT name, flowrate, pressure, temperature, turbidity, tds, timestamp, battery FROM latestNodeView ORDER BY nodeID;`);
+        const result = await client.query(`SELECT * FROM latestNodeView ORDER BY nodeID;`);
+        
+        const critical = [0,0]; // Assigning hard-coded positions for nodeID and severity for ease of interpretation
 
         const formatted = result.rows.map(row => {
+            critical[0] = row.nodeid;
             if (!(row.temperature) || !(row.turbidity) || !(row.tds)) { // Node that doesn't report all fields
-                const critical = [row.nodeid];
                 if (row.battery < 30) {
                     critical.push(`Battery: ${row.battery}`);
+                    critical[1] = 2;
                 }
                 if (!(2 <= row.pressure && row.pressure <= 9)) {
+                    critical[1] = 3;
                     critical.push(`Pressure: ${row.pressure}`);
 
                     return {
@@ -122,6 +126,7 @@ router.get('/read', async (req, res) => {
                         timestamp: row.timestamp,
                     };
                 } else if (!(3 <= row.pressure && row.pressure <= 6)) {
+                    critical[1] = 2;
                     critical.push(`Pressure: ${row.pressure}`);
 
                     return {
@@ -149,9 +154,10 @@ router.get('/read', async (req, res) => {
                     };
                 }
             } else { // Node that reports all fields
-                const critical = [row.nodeid];
+                critical[0] = row.nodeid;
                 if (row.battery < 30) {
                     critical.push(`Battery: ${row.battery}`);
+                    critical[1] = 2;
                 }
                 if (!(2 <= row.pressure && row.pressure <= 9) || !(0 <= row.temperature && row.temperature <= 30) || !(row.turbidity <= 5) || !(0 <= row.tds && row.tds <= 1200)) {
                     if (!(2 <= row.pressure && row.pressure <= 9)) {
@@ -166,6 +172,8 @@ router.get('/read', async (req, res) => {
                     if (!(0 <= row.tds && row.tds <= 1200)) {
                         critical.push(`TDS: ${row.tds}`);
                     }
+
+                    critical[1] = 3;
 
                     return {
                         name: row.name,
@@ -191,6 +199,8 @@ router.get('/read', async (req, res) => {
                     if (!(200 <= row.tds && row.tds <= 400)) {
                         critical.push(`TDS: ${row.tds}`);
                     }
+
+                    critical[1] = 2;
                     
                     return {
                         name: row.name,
@@ -218,6 +228,22 @@ router.get('/read', async (req, res) => {
                 }
             };
         });
+
+        const query = `INSERT INTO alertLog (nodeID, timestamp, reason, severity) VALUES ($1, $2, $3, $4);`;
+
+        await client.query(query, [
+            critical[0],
+            new Date(),
+            critical.slice(2),
+            critical[1],
+        ]);
+        
+        console.log([
+            critical[0],
+            new Date(),
+            critical.slice(2),
+            critical[1],
+        ]);
 
         res.setHeader('Content-Type', 'application/json');
         res.json({nodes: formatted || null});
