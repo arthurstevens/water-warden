@@ -142,8 +142,8 @@ CREATE INDEX announcementLog_expiry ON announcementLog(expiry);
 -- ============================================================================
 
 INSERT INTO node (name, latitude, longitude) VALUES
-('Node-001', 28.52955, 30.26594),
-('Node-002', 29.52955, 29.26594);
+('Some Area A', 28.52955, 30.26594),
+('Another Area B', 29.52955, 29.26594);
 
 INSERT INTO nodeAdjacency (mainNodeID, childNodeID) VALUES
 (1, 2);

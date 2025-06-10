@@ -91,22 +91,15 @@ app.get('/api/read_alert', async (req, res) => {
 
         await client.query(`SET search_path TO "amanzi-warden";`);
 
-        const query = `
-            SELECT announcementLog.announcementID, announcementLog.expiry, announcementPresets.heading, announcementPresets.content
-            FROM announcementLog LEFT JOIN announcementPresets
-            ON announcementPresets.announcementID=announcementLog.announcementID
-            WHERE initialTime < NOW() AND expiry > NOW();
-        `;
-
-        const result = await client.query(query);
+        const result = await client.query('SELECT * FROM activeAnnouncements');
 
         const formatted = result.rows.map(row => {
             return {
-                id: row.announcementid,
-                expiry: row.expiry,
                 heading: row.heading,
                 content: row.content,
                 severity: 2,
+                initialtime: row.initialtime,
+                expiry: row.expiry
             };
         });
         
@@ -134,18 +127,22 @@ app.get('/api/read', async (req, res) => {
         await client.connect();
         await client.query(`SET search_path TO "amanzi-warden";`);
 
-        const result = await client.query(`SELECT DISTINCT ON (name) * FROM nodeView ORDER BY name, timestamp DESC;`);
+        const result = await client.query(`SELECT * FROM latestNodeView ORDER BY nodeID;`);
 
         const formatted = result.rows.map(row => {
             return {
+                nodeid: row.nodeid,
                 name: row.name,
-                timestamp: row.timestamp,
+                status: 1, // Needs a function.
                 flowRate: row.flowrate,
                 pressure: row.pressure,
-                battery: row.battery,
                 temperature: row.temperature,
                 turbidity: row.turbidity,
-                totalDissolvedSolids: row.totaldissolvedsolids,
+                tds: row.tds,
+                longitude: row.longitude,
+                latitude: row.latitude,
+                timestamp: row.timestamp,
+                battery: row.battery
             };
         });
 
