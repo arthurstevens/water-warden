@@ -117,7 +117,7 @@ CREATE OR REPLACE VIEW latestNodeView AS
 SELECT DISTINCT ON (nl.nodeID)
 n.id AS nodeID, n.name, nl.flowRate, nl.pressure, nl.temperature, nl.turbidity, nl.totalDissolvedSolids AS tds, nl.timestamp, n.longitude, n.latitude, nl.battery
 FROM nodeLog nl
-JOIN node n ON n.ID = nl.nodeID
+LEFT JOIN node n ON n.ID = nl.nodeID
 ORDER BY nl.nodeID, nl.timestamp DESC;
 
 -- Active announcements
