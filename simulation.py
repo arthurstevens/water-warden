@@ -5,16 +5,20 @@ import datetime
 import requests
 import psycopg2
 import secrets
+import os
+import dotenv
+
+dotenv.load_dotenv()
 
 NODES_TO_GENERATE = 50
 NODE_INTERVAL = 5
 
 def createNode(name, token, longitude, latitude):
     conn = psycopg2.connect(
-        host="localhost",
-        database="amanzi-water-db",
-        user="postgres",
-        password="$$%%^^LocalDB^^%%$$"
+        host=os.getenv("PG_HOST"),
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
     )
 
     with conn:

@@ -110,147 +110,89 @@ router.get('/read', async (req, res) => {
         await client.query(`SET search_path TO "amanzi-warden";`);
 
         const result = await client.query(`SELECT * FROM latestNodeView ORDER BY nodeID;`);
-        
-        const critical = [0,0]; // Assigning hard-coded positions for nodeID and severity for ease of interpretation
 
-        const formatted = result.rows.map(row => {
-            critical[0] = row.nodeid;
-            if (!(row.temperature) || !(row.turbidity) || !(row.tds)) { // Node that doesn't report all fields
-                if (row.battery < 30) {
-                    critical.push(`Battery: ${row.battery}`);
+        const formatted = [];
+        
+        for (const node of result.rows) {
+            let critical = [node.nodeid,1]; // Assigning hard-coded positions for nodeID and severity for ease of interpretation
+            
+            if (!(node.temperature) || !(node.turbidity) || !(node.tds)) { // Node that doesn't report all fields
+                if (node.battery < 30) {
+                    critical.push(`Battery: ${node.battery}`);
                     critical[1] = 2;
                 }
-                if (!(2 <= row.pressure && row.pressure <= 9)) {
+                if (!(2 <= node.pressure && node.pressure <= 9)) {
                     critical[1] = 3;
-                    critical.push(`Pressure: ${row.pressure}`);
-
-                    return {
-                        name: row.name,
-                        status: 3,
-                        flowRate: row.flowrate,
-                        pressure: row.pressure,
-                        temperature: row.temperature,
-                        turbidity: row.turbidity,
-                        tds: row.tds,
-                        battery: row.battery,
-                        timestamp: row.timestamp,
-                    };
-                } else if (!(3 <= row.pressure && row.pressure <= 6)) {
+                    critical.push(`Pressure: ${node.pressure}`);
+                } else if (!(3 <= node.pressure && node.pressure <= 6)) {
                     critical[1] = 2;
-                    critical.push(`Pressure: ${row.pressure}`);
-
-                    return {
-                        name: row.name,
-                        status: 2,
-                        flowRate: row.flowrate,
-                        pressure: row.pressure,
-                        temperature: row.temperature,
-                        turbidity: row.turbidity,
-                        tds: row.tds,
-                        battery: row.battery,
-                        timestamp: row.timestamp,
-                    };
-                } else {
-                    return {
-                        name: row.name,
-                        status: 1,
-                        flowRate: row.flowrate,
-                        pressure: row.pressure,
-                        temperature: row.temperature,
-                        turbidity: row.turbidity,
-                        tds: row.tds,
-                        battery: row.battery,
-                        timestamp: row.timestamp,
-                    };
+                    critical.push(`Pressure: ${node.pressure}`);
                 }
             } else { // Node that reports all fields
-                critical[0] = row.nodeid;
-                if (row.battery < 30) {
-                    critical.push(`Battery: ${row.battery}`);
+                critical[0] = node.nodeid;
+                if (node.battery < 30) {
+                    critical.push(`Battery: ${node.battery}`);
                     critical[1] = 2;
                 }
-                if (!(2 <= row.pressure && row.pressure <= 9) || !(0 <= row.temperature && row.temperature <= 30) || !(row.turbidity <= 5) || !(0 <= row.tds && row.tds <= 1200)) {
-                    if (!(2 <= row.pressure && row.pressure <= 9)) {
-                        critical.push(`Pressure: ${row.pressure}`);
-                    }
-                    if (!(0 <= row.temperature && row.temperature <= 30)) {
-                        critical.push(`Temperature: ${row.temperature}`);
-                    }
-                    if (!(row.turbidity <= 5)) {
-                        critical.push(`Turbidity: ${row.turbidity}`);
-                    }
-                    if (!(0 <= row.tds && row.tds <= 1200)) {
-                        critical.push(`TDS: ${row.tds}`);
-                    }
 
+                if (!(2 <= node.pressure && node.pressure <= 9)) {
                     critical[1] = 3;
-
-                    return {
-                        name: row.name,
-                        status: 3,
-                        flowRate: row.flowrate,
-                        pressure: row.pressure,
-                        temperature: row.temperature,
-                        turbidity: row.turbidity,
-                        tds: row.tds,
-                        battery: row.battery,
-                        timestamp: row.timestamp,
-                    };
-                } else if (!(3 <= row.pressure && row.pressure <= 6) || !(15 <= row.temperature && row.temperature <= 25) || !(row.turbidity <= 1) || !(200 <= row.tds && row.tds <= 400)) {
-                    if (!(3 <= row.pressure && row.pressure <= 6)) {
-                        critical.push(`Pressure: ${row.pressure}`);
-                    }
-                    if (!(15 <= row.temperature && row.temperature <= 25)) {
-                        critical.push(`Temperature: ${row.temperature}`);
-                    }
-                    if (!(row.turbidity <= 1)) {
-                        critical.push(`Turbidity: ${row.turbidity}`);
-                    }
-                    if (!(200 <= row.tds && row.tds <= 400)) {
-                        critical.push(`TDS: ${row.tds}`);
-                    }
-
+                    critical.push(`Pressure: ${node.pressure}`);
+                } else if (!(3 <= node.pressure && node.pressure <= 6)) {
                     critical[1] = 2;
-                    
-                    return {
-                        name: row.name,
-                        status: 2,
-                        flowRate: row.flowrate,
-                        pressure: row.pressure,
-                        temperature: row.temperature,
-                        turbidity: row.turbidity,
-                        tds: row.tds,
-                        battery: row.battery,
-                        timestamp: row.timestamp,
-                    };
-                } else {
-                    return {
-                        name: row.name,
-                        status: 1,
-                        flowRate: row.flowrate,
-                        pressure: row.pressure,
-                        temperature: row.temperature,
-                        turbidity: row.turbidity,
-                        tds: row.tds,
-                        battery: row.battery,
-                        timestamp: row.timestamp,
-                    };
+                    critical.push(`Pressure: ${node.pressure}`);
+                }
+
+                if (!(15 <= node.temperature && node.temperature <= 25)) {
+                    critical[1] = 2;
+                    critical.push(`Temperature: ${node.temperature}`);
+                } else if (!(0 <= node.temperature && node.temperature <= 30)) {
+                    critical[1] = 3;
+                    critical.push(`Temperature: ${node.temperature}`);
+                }
+
+                if (!(node.turbidity <= 5)) {
+                    critical[1] = 3;
+                    critical.push(`Turbidity: ${node.turbidity}`);
+                } else if (!(node.turbidity <= 1)) {
+                    critical[1] = 2;
+                    critical.push(`Turbidity: ${node.turbidity}`);
+                }
+
+                if (!(0 <= node.tds && node.tds <= 1200)) {
+                    critical[1] = 3;
+                    critical.push(`TDS: ${node.tds}`);
+                } else if (!(200 <= node.tds && node.tds <= 400)) {
+                    critical[1] = 2;
+                    critical.push(`TDS: ${node.tds}`);
                 }
             };
-        });
 
-        // if (critical[1] == 2 || critical[1] == 3) {
+            if (critical[1] == 2 || critical[1] == 3) {
+                const query = `INSERT INTO alertLog (nodeID, timestamp, reason, severity) VALUES ($1, $2, $3, $4);`;
+                
+                await client.query(query, [
+                    critical[0],
+                    new Date(),
+                    critical.slice(2),
+                    critical[1],
+                ]);
+            };
 
-        //     const query = `INSERT INTO alertLog (nodeID, timestamp, reason, severity) VALUES ($1, $2, $3, $4);`;
-            
-        //     await client.query(query, [
-        //         critical[0],
-        //         new Date(),
-        //         critical.slice(2),
-        //         critical[1],
-        //     ]);
-        // };
-            
+            formatted.push({
+                name: node.name,
+                status: critical[1],
+                flowRate: node.flowrate,
+                pressure: node.pressure,
+                temperature: node.temperature,
+                turbidity: node.turbidity,
+                tds: node.tds,
+                battery: node.battery,
+                timestamp: node.timestamp
+            });
+
+        };
+        
         res.setHeader('Content-Type', 'application/json');
         res.json({nodes: formatted || null});
     } catch (err) {
