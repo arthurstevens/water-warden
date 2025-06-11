@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS node CASCADE;
 DROP TABLE IF EXISTS nodeLog CASCADE;
 DROP TABLE IF EXISTS alertLog CASCADE;
 DROP TABLE IF EXISTS nodeAdjacency CASCADE;
-DROP TABLE IF EXISTS announcementLog CASCADE;
+DROP TABLE IF EXISTS announcement CASCADE;
 DROP TABLE IF EXISTS announcementPresets CASCADE;
 
 -- ============================================================================
@@ -83,7 +83,7 @@ CREATE TABLE users (
 );
 
 -- Announcement logs: records active and expired announcements and the user that triggered it
-CREATE TABLE IF NOT EXISTS announcementLog (
+CREATE TABLE IF NOT EXISTS announcement (
     id SERIAL PRIMARY KEY,
 	heading VARCHAR(50) NOT NULL,
     content VARCHAR(255) NOT NULL,
@@ -124,7 +124,7 @@ ORDER BY nl.nodeID, nl.timestamp DESC;
 -- Active announcements
 CREATE OR REPLACE VIEW activeAnnouncements AS
 SELECT heading, content, initialTime, expiry, severity
-FROM announcementLog
+FROM announcement
 WHERE expiry > NOW()
 ORDER BY severity DESC, expiry ASC;
 
@@ -136,7 +136,7 @@ ORDER BY severity DESC, expiry ASC;
 CREATE INDEX nodeLog_timestamp ON nodeLog(timestamp);
 
 -- Faster lookup for expired announcements
-CREATE INDEX announcementLog_expiry ON announcementLog(expiry);
+CREATE INDEX announcement_expiry ON announcement(expiry);
 
 -- Faster lookup for users
 CREATE INDEX users_username ON users(username);
@@ -165,7 +165,7 @@ INSERT INTO alertLog (nodeID, timestamp, reason, severity) VALUES
 INSERT INTO users (username, passwordHash, role) VALUES
 ('admin', '$2b$10$r/N.dxlYKFd/bvNLz/9peuHXrJIrrqXWa0IzEbWgBoF2YSA8mq9XW', 'admin'); -- password: password
 
-INSERT INTO announcementLog (heading, content, userID, initialTime, expiry, severity) VALUES
+INSERT INTO announcement (heading, content, userID, initialTime, expiry, severity) VALUES
 ('Test Announcement 1', 'Test content 1 (active)', 1, '2025-06-07 13:25:00', NOW() + INTERVAL '1 day', 3),
 ('Test Announcement 2', 'Test content 1 (active)', 1, '2025-06-06 13:25:00', NOW() + INTERVAL '2 day', 2),
 ('Test Announcement 3', 'Test content 1 (inactive)', 1, '2025-06-07 13:25:00', NOW() - INTERVAL '1 day', 3),
