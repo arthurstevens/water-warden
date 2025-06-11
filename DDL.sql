@@ -41,6 +41,7 @@ CREATE TYPE user_role AS ENUM ('admin', 'user');
 CREATE TABLE IF NOT EXISTS node (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
+    token TEXT NOT NULL UNIQUE,
     latitude NUMERIC(8,5) NOT NULL,
     longitude NUMERIC(8,5) NOT NULL,
     createdDate TIMESTAMP NOT NULL DEFAULT NOW()
@@ -125,7 +126,7 @@ CREATE OR REPLACE VIEW activeAnnouncements AS
 SELECT heading, content, initialTime, expiry, severity
 FROM announcementLog
 WHERE expiry > NOW()
-ORDER BY initialTime ASC;
+ORDER BY severity DESC, expiry ASC;
 
 -- ============================================================================
 -- INDEX DEFINITIONS
@@ -144,9 +145,9 @@ CREATE INDEX users_username ON users(username);
 -- SEED / TESTING
 -- ============================================================================
 
-INSERT INTO node (name, latitude, longitude) VALUES
-('Some Area A', 28.52955, 30.26594),
-('Another Area B', 29.52955, 29.26594);
+INSERT INTO node (name, token, latitude, longitude) VALUES
+('Some Area A', '123abc789xyz', 28.52955, 30.26594),
+('Another Area B', 'xyz789abc123', 29.52955, 29.26594);
 
 INSERT INTO nodeAdjacency (mainNodeID, childNodeID) VALUES
 (1, 2);
@@ -162,10 +163,10 @@ INSERT INTO alertLog (nodeID, timestamp, reason, severity) VALUES
 (2, NOW() - INTERVAL '45 minutes', 'High pressure', 3);
 
 INSERT INTO users (username, passwordHash) VALUES
-('user1', '123');
+('admin', '$2b$10$r/N.dxlYKFd/bvNLz/9peuHXrJIrrqXWa0IzEbWgBoF2YSA8mq9XW'); -- password: password
 
 INSERT INTO announcementLog (heading, content, userID, initialTime, expiry, severity) VALUES
-('Test Announcement 1', 'Test content 1 (active)', 1, '2025-06-07 13:25:00', NOW() + INTERVAL '1 day', 1),
+('Test Announcement 1', 'Test content 1 (active)', 1, '2025-06-07 13:25:00', NOW() + INTERVAL '1 day', 3),
 ('Test Announcement 2', 'Test content 1 (active)', 1, '2025-06-06 13:25:00', NOW() + INTERVAL '2 day', 2),
 ('Test Announcement 3', 'Test content 1 (inactive)', 1, '2025-06-07 13:25:00', NOW() - INTERVAL '1 day', 3),
 ('Test Announcement 4', 'Test content 1 (inactive)', 1, '2025-06-06 13:25:00', NOW() - INTERVAL '2 day', 2);
