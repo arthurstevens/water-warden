@@ -41,7 +41,7 @@ CREATE TYPE user_role AS ENUM ('admin', 'user');
 CREATE TABLE IF NOT EXISTS node (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
-    token TEXT NOT NULL UNIQUE,
+    token VARCHAR(64) NOT NULL UNIQUE,
     latitude NUMERIC(8,5) NOT NULL,
     longitude NUMERIC(8,5) NOT NULL,
     createdDate TIMESTAMP NOT NULL DEFAULT NOW()
