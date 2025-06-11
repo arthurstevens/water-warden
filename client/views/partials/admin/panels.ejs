@@ -5,7 +5,7 @@
     <h1 class="text-2xl font-semibold">Initialise Node</h1>
     <p class="text-sm font-normal text-gray-500">Begin accepting transmissions from a node</p>
 
-    <form method="POST" action="" class="flex flex-col gap-3 w-full">
+    <form method="POST" action="admin/init-node" class="flex flex-col gap-3 w-full">
       <div class="flex flex-col gap-2 items-center w-full my-4">
         <input id="node-name" name="name" type="text" placeholder="Name" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
         <input id="node-token" name="token" type="text" placeholder="Token" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
@@ -21,7 +21,7 @@
     <h1 class="text-2xl font-semibold">Delete Node</h1>
     <p class="text-sm font-normal text-gray-500">Prevents transmissions and deletes logs</p>
 
-    <form method="POST" action="" class="flex flex-col gap-3 w-full">
+    <form method="POST" action="admin/delete-node" class="flex flex-col gap-3 w-full">
       <div class="flex flex-col gap-2 items-center w-full my-4">
         <input id="node-id" name="id" type="text" placeholder="Node ID" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
       </div>
@@ -34,7 +34,7 @@
     <h1 class="text-2xl font-semibold">Post Announcement</h1>
     <p class="text-sm font-normal text-gray-500">Immediately post an alert/announcement</p>
 
-    <form method="POST" action="" class="flex flex-col gap-3 w-full">
+    <form method="POST" action="admin/post-announcement" class="flex flex-col gap-3 w-full">
       <div class="flex flex-col gap-2 items-center w-full my-4">
         <input id="announce-heading" name="heading" type="text" placeholder="Heading" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
         <input id="announce-content" name="content" type="text" placeholder="Content" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
