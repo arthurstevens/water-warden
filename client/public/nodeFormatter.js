@@ -27,7 +27,7 @@ export function getCellClass(key, value) {
     const classes = [base];
 
     // Selective font weights
-    if (['id', 'status', 'battery'].includes(key)) {
+    if (['name', 'status', 'battery'].includes(key)) {
         classes.push('font-semibold');
     }
 
