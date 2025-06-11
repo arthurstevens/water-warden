@@ -123,12 +123,12 @@ router.get('/read', async (req, res) => {
                     return {
                         name: row.name,
                         status: 3,
-                        battery: row.battery,
                         flowRate: row.flowrate,
                         pressure: row.pressure,
                         temperature: row.temperature,
                         turbidity: row.turbidity,
                         tds: row.tds,
+                        battery: row.battery,
                         timestamp: row.timestamp,
                     };
                 } else if (!(3 <= row.pressure && row.pressure <= 6)) {
@@ -138,24 +138,24 @@ router.get('/read', async (req, res) => {
                     return {
                         name: row.name,
                         status: 2,
-                        battery: row.battery,
                         flowRate: row.flowrate,
                         pressure: row.pressure,
                         temperature: row.temperature,
                         turbidity: row.turbidity,
                         tds: row.tds,
+                        battery: row.battery,
                         timestamp: row.timestamp,
                     };
                 } else {
                     return {
                         name: row.name,
                         status: 1,
-                        battery: row.battery,
                         flowRate: row.flowrate,
                         pressure: row.pressure,
                         temperature: row.temperature,
                         turbidity: row.turbidity,
                         tds: row.tds,
+                        battery: row.battery,
                         timestamp: row.timestamp,
                     };
                 }
@@ -184,12 +184,12 @@ router.get('/read', async (req, res) => {
                     return {
                         name: row.name,
                         status: 3,
-                        battery: row.battery,
                         flowRate: row.flowrate,
                         pressure: row.pressure,
                         temperature: row.temperature,
                         turbidity: row.turbidity,
                         tds: row.tds,
+                        battery: row.battery,
                         timestamp: row.timestamp,
                     };
                 } else if (!(3 <= row.pressure && row.pressure <= 6) || !(15 <= row.temperature && row.temperature <= 25) || !(row.turbidity <= 1) || !(200 <= row.tds && row.tds <= 400)) {
@@ -211,24 +211,24 @@ router.get('/read', async (req, res) => {
                     return {
                         name: row.name,
                         status: 2,
-                        battery: row.battery,
                         flowRate: row.flowrate,
                         pressure: row.pressure,
                         temperature: row.temperature,
                         turbidity: row.turbidity,
                         tds: row.tds,
+                        battery: row.battery,
                         timestamp: row.timestamp,
                     };
                 } else {
                     return {
                         name: row.name,
                         status: 1,
-                        battery: row.battery,
                         flowRate: row.flowrate,
                         pressure: row.pressure,
                         temperature: row.temperature,
                         turbidity: row.turbidity,
                         tds: row.tds,
+                        battery: row.battery,
                         timestamp: row.timestamp,
                     };
                 }
