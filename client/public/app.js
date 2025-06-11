@@ -46,7 +46,7 @@ async function updateDashboard() {
         updateTableContent(nodeData.nodes, nodeFilter);
         updateAlertContent(nodeData.alerts)
         
-        if (firstFetch) {
+        if (firstFetch && nodeData.nodes.length != 0) {
             setTableFilterColumns(nodeData.nodes);
             firstFetch = false;
         }
