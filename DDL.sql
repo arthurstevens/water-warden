@@ -163,7 +163,8 @@ INSERT INTO alertLog (nodeID, timestamp, reason, severity) VALUES
 (2, NOW() - INTERVAL '45 minutes', 'High pressure', 3);
 
 INSERT INTO users (username, passwordHash, role) VALUES
-('admin', '$2b$10$r/N.dxlYKFd/bvNLz/9peuHXrJIrrqXWa0IzEbWgBoF2YSA8mq9XW', 'admin'); -- password: password
+('admin', '$2b$10$r/N.dxlYKFd/bvNLz/9peuHXrJIrrqXWa0IzEbWgBoF2YSA8mq9XW', 'admin'), -- password: password
+('some_user', '$2b$10$r/N.dxlYKFd/bvNLz/9peuHXrJIrrqXWa0IzEbWgBoF2YSA8mq9XW', 'user'); -- password: password
 
 INSERT INTO announcement (heading, content, userID, initialTime, expiry, severity) VALUES
 ('Test Announcement 1', 'Test content 1 (active)', 1, '2025-06-07 13:25:00', NOW() + INTERVAL '1 day', 3),
