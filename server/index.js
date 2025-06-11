@@ -17,11 +17,20 @@ app.use(session({
     }
 }));
 
-// Use if we utilise data in EJS (like username or role)
-// app.use((req, res, next) => {
-//     res.locals.user = req.session.user;
-//     next();
-// });
+app.use((req, res, next) => {
+    res.locals.user = req.session.user;
+    next();
+});
+
+app.use((req, res, next) => {
+    res.locals.footer = {
+        text: 'All rights reserved.',
+        email: 'someone@example.com',
+        emailText: 'Amanzi Warden',
+        year: new Date().getFullYear(),
+    };
+    next();
+});
 
 // View engine
 app.set('view engine', 'ejs');
