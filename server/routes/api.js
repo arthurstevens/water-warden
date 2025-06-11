@@ -2,15 +2,14 @@ const express = require('express');
 const { Client } = require('pg');
 const router = express.Router();
 
-router.post('/simulate', async (req, res) => {
+router.post('/node-readings', async (req, res) => {
     const data = req.body;
 
-    // Checking for empty required fields
-    if (!data || !data.token || !data.timestamp || !data.flowrate || !data.pressure || !data.battery) {
-        const emptyFields = Object.keys(data).filter(key => !data[key]);
-        if (emptyFields.length > 0) {
-            return res.status(400).json({ message: "Missing required fields", emptyFields });
-        }
+    const requiredFields = ['token', 'timestamp', 'flowrate', 'pressure', 'battery'];
+    const missing = requiredFields.filter(f => data[f] === undefined || data[f] === null);
+
+    if (missing.length > 0) {
+        return res.status(400).json({ message: "Missing required fields", missing });
     }
 
     const client = new Client({
@@ -26,10 +25,15 @@ router.post('/simulate', async (req, res) => {
         await client.connect();
         await client.query(`SET search_path TO "amanzi-warden";`);
 
-        const result = await client.query(`SELECT id FROM node WHERE token = $1`, [data.token]);
+        const result = await client.query(`SELECT id FROM node WHERE token = $1 LIMIT 1`, [data.token]);
+
+        if (result.rowCount === 0) {
+            return res.status(500).json({ error: `Token <${data.token}> matches no nodes.` });
+        }
+
         const nodeid = result.rows[0].id;
 
-        query = `
+        const query = `
             INSERT INTO nodeLog (nodeID, timeStamp, flowRate, pressure, battery, temperature, turbidity, totalDissolvedSolids) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
         `;
@@ -44,8 +48,8 @@ router.post('/simulate', async (req, res) => {
             data.turbidity,
             data.totaldissolvedsolids
         ]);
+        
         res.status(200).json({ message: "Data inserted successfully" });
-
     } catch (err) {
         console.error("DB insert error:", err);
         res.status(500).json({ error: "Database insert failed" });
@@ -235,15 +239,18 @@ router.get('/read', async (req, res) => {
             };
         });
 
-        const query = `INSERT INTO alertLog (nodeID, timestamp, reason, severity) VALUES ($1, $2, $3, $4);`;
+        // if (critical[1] == 2 || critical[1] == 3) {
 
-        await client.query(query, [
-            critical[0],
-            new Date(),
-            critical.slice(2),
-            critical[1],
-        ]);
-
+        //     const query = `INSERT INTO alertLog (nodeID, timestamp, reason, severity) VALUES ($1, $2, $3, $4);`;
+            
+        //     await client.query(query, [
+        //         critical[0],
+        //         new Date(),
+        //         critical.slice(2),
+        //         critical[1],
+        //     ]);
+        // };
+            
         res.setHeader('Content-Type', 'application/json');
         res.json({nodes: formatted || null});
     } catch (err) {
