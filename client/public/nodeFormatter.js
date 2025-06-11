@@ -1,7 +1,8 @@
 // Utility for formatting units of measurement
 export function formatValue(key, value) {
     key = key.toLowerCase();
-
+    
+    if (!value) return '-';
     if (key === 'status') {
         return {
             1: 'Normal',
