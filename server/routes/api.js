@@ -237,13 +237,6 @@ router.get('/read', async (req, res) => {
             critical.slice(2),
             critical[1],
         ]);
-        
-        console.log([
-            critical[0],
-            new Date(),
-            critical.slice(2),
-            critical[1],
-        ]);
 
         res.setHeader('Content-Type', 'application/json');
         res.json({nodes: formatted || null});
