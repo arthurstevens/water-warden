@@ -24,7 +24,7 @@ export function formatValue(key, value) {
 export function getCellClass(key, value) {
     key = key.toLowerCase();
 
-    const base = 'px-6 py-4 text-gray-700';
+    const base = 'px-6 py-4 sm:whitespace-nowrap text-gray-700';
     const classes = [base];
 
     // Selective font weights
@@ -35,11 +35,13 @@ export function getCellClass(key, value) {
     // Status colour indicator
     if (key === 'status') {
         const statusColor = {
-            1: 'text-green-500',
-            2: 'text-orange-500',
-            3: 'text-red-500'
+            1: '!text-green-500',
+            2: '!text-orange-500',
+            3: '!text-red-500'
         }[value];
-        if (statusColor) classes.push(statusColor);
+        if (statusColor) {
+            classes.push(statusColor);
+        }
     }
 
     // Battery colour indicator
@@ -47,11 +49,11 @@ export function getCellClass(key, value) {
         const batteryVal = parseFloat(String(value).replace('%', ''));
         if (!isNaN(batteryVal)) {
             if (batteryVal >= 60) {
-                classes.push('text-green-500');
+                classes.push('!text-green-500');
             } else if (batteryVal >= 30) {
-                classes.push('text-orange-500');
+                classes.push('!text-orange-500');
             } else {
-                classes.push('text-red-500');
+                classes.push('!text-red-500');
             }
         }
     }
