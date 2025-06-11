@@ -70,7 +70,7 @@ router.get('/read_alert', async (req, res) => {
                 heading: row.heading,
                 content: row.content,
                 severity: row.severity,
-                initialtime: row.initialtime,
+                initialTime: row.initialtime,
                 expiry: row.expiry
             };
         });
