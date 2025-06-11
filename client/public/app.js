@@ -22,7 +22,6 @@ let wasDashboardRefresh = true;
 let nodeFilter = null;
 let firstFetch = true;
 
-//let seesaw = false;
 async function updateDashboard() {
     try {
         // Update error message if previous fetch failed
@@ -33,10 +32,6 @@ async function updateDashboard() {
                 processing: true
             });
         }
-
-        //seesaw = !seesaw;
-        //if (seesaw) { throw new Error('yay'); }
-
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), DASHBOARD_REFRESH_TIMEOUT);
 
@@ -50,6 +45,7 @@ async function updateDashboard() {
         updateKPIContent(nodeData.nodes);
         updateTableContent(nodeData.nodes, nodeFilter);
         updateAlertContent(nodeData.alerts)
+        
         if (firstFetch) {
             setTableFilterColumns(nodeData.nodes);
             firstFetch = false;
