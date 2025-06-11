@@ -97,12 +97,17 @@ router.post('/delete-node', requireAdmin, async (req, res) => {
         await client.connect();
         await client.query(`SET search_path TO "amanzi-warden";`);
 
-        await client.query(
+        const result = await client.query(
             `DELETE FROM node WHERE id = $1`,
             [id]
         );
 
-        req.session.messages = { success: 'Node deleted successfully.' };
+        if (result.rowCount === 0) {
+            req.session.messages = { error: 'No node found with that ID.' }
+        } else {
+            req.session.messages = { success: 'Node deleted successfully.' };
+        }
+
     } catch (err) {
         console.error(err);
         req.session.messages = { error: 'Failed to delete node.' };
