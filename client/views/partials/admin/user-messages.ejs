@@ -1,0 +1,10 @@
+    <%# User messages %>
+    <% if (messages && messages.error) { %>
+      <div class="w-full p-2 bg-red-100 border border-red-300 text-red-700 rounded text-center">
+        <%= messages.error %>
+      </div>
+    <% } else if (messages && messages.success) { %>
+      <div class="w-full p-2 bg-green-100 border border-green-300 text-green-700 rounded text-center">
+        <%= messages.success %>
+      </div>
+    <% } %>
