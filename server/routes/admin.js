@@ -2,11 +2,16 @@ const express = require('express');
 const router = express.Router();
 const { Client } = require('pg');
 
-// Fake auth middleware for now
 function requireAdmin(req, res, next) {
-    if (req.session && req.session.user && req.session.user.role === 'admin') {
-        return next();
+    if (req.session && req.session.user && req.session.user.role) {
+        if (req.session.user.role === 'admin') {
+            return next();
+        } else {
+            req.session.messages = { error: 'The account provided does not have access to this page.' };
+            return res.redirect('/admin/login');
+        }
     }
+
     return res.redirect('/admin/login');
 }
 
