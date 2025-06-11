@@ -118,9 +118,13 @@ router.get('/read', async (req, res) => {
             
             if (!(node.temperature) || !(node.turbidity) || !(node.tds)) { // Node that doesn't report all fields
                 if (node.battery < 30) {
+                    critical[1] = 3;
                     critical.push(`Battery: ${node.battery}`);
+                } else if (node.battery < 60) {
                     critical[1] = 2;
+                    critical.push(`Battery: ${node.battery}`);
                 }
+
                 if (!(2 <= node.pressure && node.pressure <= 9)) {
                     critical[1] = 3;
                     critical.push(`Pressure: ${node.pressure}`);
@@ -131,8 +135,11 @@ router.get('/read', async (req, res) => {
             } else { // Node that reports all fields
                 critical[0] = node.nodeid;
                 if (node.battery < 30) {
+                    critical[1] = 3;
                     critical.push(`Battery: ${node.battery}`);
+                } else if (node.battery < 60) {
                     critical[1] = 2;
+                    critical.push(`Battery: ${node.battery}`);
                 }
 
                 if (!(2 <= node.pressure && node.pressure <= 9)) {
