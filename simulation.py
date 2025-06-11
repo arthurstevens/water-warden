@@ -43,14 +43,13 @@ def postNodeData(data):
     print(f"Response: {response.status_code} {response.text}")
 
 def updateNode(node):
-    # Maximum deviation per update
     DELTAS = {
-        "flowrate": 2,
-        "pressure": 0.2,
-        "battery": 1,
-        "temperature": 0.5,
-        "turbidity": 0.2,
-        "totaldissolvedsolids": 50
+        "flowrate": 1.2,
+        "pressure": 0.1,
+        "battery": 0.5,
+        "temperature": 0.3,
+        "turbidity": 0.1,
+        "totaldissolvedsolids": 20
     }
 
     def vary(value, delta, lower, upper, round_dp=None):
@@ -80,7 +79,7 @@ def updateNode(node):
     return node
 
 def main():
-    nodes = [ ]
+    nodes = []
 
     for i in range(NODES_TO_GENERATE):
         name = f'Example Node {i + 1}'
@@ -89,17 +88,53 @@ def main():
         longitude = round(random.uniform(28.06000, 28.08000), 5)
 
         id = createNode(name, token, longitude, latitude)
+
+        # Decide initial node severity category
+        rand = random.random()
+        if rand < 0.9:
+            state = 'normal'
+        elif rand < 0.97:
+            state = 'potential'
+        else:
+            state = 'critical'
+
         water_quality = random.choice([True, False])
+
+        if state == 'normal':
+            flowrate = random.randint(15, 18)
+            pressure = round(random.uniform(3.5, 5.5), 2)
+            battery = random.randint(70, 100)
+        elif state == 'potential':
+            flowrate = random.randint(12, 14)
+            pressure = round(random.uniform(2.5, 5), 2)
+            battery = random.randint(40, 70)
+        elif state == 'critical':
+            flowrate = random.randint(8, 11)
+            pressure = round(random.uniform(1, 2.5), 2)   
+            battery = random.randint(1, 30)
+
+        temperature = (
+            round(random.uniform(10, 15), 1) if state == 'critical' and water_quality else
+            round(random.uniform(18, 22), 1) if water_quality else None
+        )
+        turbidity = (
+            round(random.uniform(3, 5), 1) if state == 'critical' and water_quality else
+            round(random.uniform(0.1, 1), 1) if water_quality else None
+        )
+        tds = (
+            round(random.uniform(900, 1400), 1) if state == 'critical' and water_quality else
+            round(random.uniform(250, 350), 1) if water_quality else None
+        )
 
         data = {
             "token": token,
             "timestamp": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
-            "flowrate": random.randint(12,18),
-            "pressure": round(random.uniform(4,5),2),
-            "battery": random.randint(30,70),
-            "temperature": round(random.uniform(15, 25), 1) if water_quality else None,
-            "turbidity": round(random.uniform(0,3),1) if water_quality else None,
-            "totaldissolvedsolids": round(random.randint(0,1200),1) if water_quality else None
+            "flowrate": flowrate,
+            "pressure": pressure,
+            "battery": battery,
+            "temperature": temperature,
+            "turbidity": turbidity,
+            "totaldissolvedsolids": tds
         }
 
         node = {
@@ -108,6 +143,7 @@ def main():
             'water_quality': water_quality,
             'data': data
         }
+
         nodes.append(node)
 
     while True:
