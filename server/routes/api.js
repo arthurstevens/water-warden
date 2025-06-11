@@ -26,9 +26,13 @@ router.post('/simulate', async (req, res) => {
         await client.connect();
         await client.query(`SET search_path TO "amanzi-warden";`);
 
-        const nodeid = await client.query(`SELECT id FROM node WHERE token = $1`, [data.token]);
+        const result = await client.query(`SELECT id FROM node WHERE token = $1`, [data.token]);
+        const nodeid = result.rows[0].id;
 
-        query = `INSERT INTO nodeLog (nodeID, timeStamp, flowRate, pressure, battery, temperature, turbidity, totalDissolvedSolids) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`;
+        query = `
+            INSERT INTO nodeLog (nodeID, timeStamp, flowRate, pressure, battery, temperature, turbidity, totalDissolvedSolids) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
+        `;
 
         await client.query(query, [
             nodeid,
@@ -101,14 +105,12 @@ router.get('/read', async (req, res) => {
         await client.connect();
         await client.query(`SET search_path TO "amanzi-warden";`);
 
-        const nodeid = await client.query(`SELECT id FROM node WHERE token = $1`, [data.token]);
-
         const result = await client.query(`SELECT * FROM latestNodeView ORDER BY nodeID;`);
         
         const critical = [0,0]; // Assigning hard-coded positions for nodeID and severity for ease of interpretation
 
         const formatted = result.rows.map(row => {
-            critical[0] = nodeid;
+            critical[0] = row.nodeid;
             if (!(row.temperature) || !(row.turbidity) || !(row.tds)) { // Node that doesn't report all fields
                 if (row.battery < 30) {
                     critical.push(`Battery: ${row.battery}`);
@@ -158,7 +160,7 @@ router.get('/read', async (req, res) => {
                     };
                 }
             } else { // Node that reports all fields
-                critical[0] = nodeid;
+                critical[0] = row.nodeid;
                 if (row.battery < 30) {
                     critical.push(`Battery: ${row.battery}`);
                     critical[1] = 2;

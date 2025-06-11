@@ -38,49 +38,49 @@ router.get('/login', (req, res) => {
     });
 });
 
-    // Create node
-    router.post('/init-node', requireAdmin, async (req, res) => {
-        const { name, token, latitude, longitude } = req.body;
+// Create node
+router.post('/init-node', requireAdmin, async (req, res) => {
+    const { name, token, latitude, longitude } = req.body;
 
-        if (!name || !latitude || !longitude) {
-            req.session.messages = { error: 'Missing required fields.' };
-            return res.redirect('/admin');
-        }
+    if (!name || !latitude || !longitude) {
+        req.session.messages = { error: 'Missing required fields.' };
+        return res.redirect('/admin');
+    }
 
-        const client = new Client({
-            host: process.env.PG_HOST,
-            port: process.env.PG_PORT,
-            user: process.env.PG_USER,
-            password: process.env.PG_PASSWORD,
-            database: process.env.PG_DATABASE,
-            ssl: false,
-        });
-
-        try {
-            await client.connect();
-            await client.query(`SET search_path TO "amanzi-warden";`);
-
-            await client.query(
-                `INSERT INTO node (name, token, latitude, longitude) VALUES ($1, $2, $3, $4)`,
-                [name, token, latitude, longitude]
-            );
-
-            req.session.messages = { success: 'Node created successfully.' };
-        } catch (err) {
-            console.error(err);
-
-            if (err.constraint === 'node_name_key') {
-                req.session.messages = { error: 'Node name already exists.' };
-            } else if (err.constraint === 'node_token_key') {
-                req.session.messages = { error: 'Node token must be unique.' };
-            } else {
-                req.session.messages = { error: 'Failed to create node.' };
-            }
-        } finally {
-            await client.end();
-            return res.redirect('/admin');
-        }
+    const client = new Client({
+        host: process.env.PG_HOST,
+        port: process.env.PG_PORT,
+        user: process.env.PG_USER,
+        password: process.env.PG_PASSWORD,
+        database: process.env.PG_DATABASE,
+        ssl: false,
     });
+
+    try {
+        await client.connect();
+        await client.query(`SET search_path TO "amanzi-warden";`);
+
+        await client.query(
+            `INSERT INTO node (name, token, latitude, longitude) VALUES ($1, $2, $3, $4)`,
+            [name, token, latitude, longitude]
+        );
+
+        req.session.messages = { success: 'Node created successfully.' };
+    } catch (err) {
+        console.error(err);
+
+        if (err.constraint === 'node_name_key') {
+            req.session.messages = { error: 'Node name already exists.' };
+        } else if (err.constraint === 'node_token_key') {
+            req.session.messages = { error: 'Node token must be unique.' };
+        } else {
+            req.session.messages = { error: 'Failed to create node.' };
+        }
+    } finally {
+        await client.end();
+        return res.redirect('/admin');
+    }
+});
 
 // Delete node
 router.post('/delete-node', requireAdmin, async (req, res) => {

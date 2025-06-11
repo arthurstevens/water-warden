@@ -5,6 +5,9 @@ import datetime
 import requests
 
 # Some nodes don't record temperature, turbidity or dissolved solids
+
+
+
 while True:
     if random.randint(1,2) == 1:
         data = {
