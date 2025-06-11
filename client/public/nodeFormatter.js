@@ -2,7 +2,7 @@
 export function formatValue(key, value) {
     key = key.toLowerCase();
     
-    if (!value) return '-';
+    if (value === null || value === undefined) return '-';
     if (key === 'status') {
         return {
             1: 'Normal',
@@ -39,6 +39,7 @@ export function getCellClass(key, value) {
             2: '!text-orange-500',
             3: '!text-red-500'
         }[value];
+
         if (statusColor) {
             classes.push(statusColor);
         }
@@ -51,6 +52,62 @@ export function getCellClass(key, value) {
             if (batteryVal >= 60) {
                 classes.push('!text-green-500');
             } else if (batteryVal >= 30) {
+                classes.push('!text-orange-500');
+            } else {
+                classes.push('!text-red-500');
+            }
+        }
+    }
+
+    // Pressure colour indicator
+    if (key === 'pressure') {
+        const pressureVal = parseFloat(String(value).replace(' bar', ''));
+        if (!isNaN(pressureVal)) {
+            if (pressureVal >= 3 && pressureVal <= 6) {
+                classes.push('!text-green-500');
+            } else if (pressureVal >= 2 && pressureVal <= 9) {
+                classes.push('!text-orange-500');
+            } else {
+                classes.push('!text-red-500');
+            }
+        }
+    }
+
+    // Temperature colour indicator
+    if (key === 'temperature') {
+        const temperatureVal = parseFloat(String(value).replace('°C', ''));
+        if (!isNaN(temperatureVal)) {
+            if (temperatureVal >= 15 && temperatureVal <= 25) {
+                classes.push('!text-green-500');
+            } else if (temperatureVal >= 0 && temperatureVal <= 30) {
+                classes.push('!text-orange-500');
+            } else {
+                classes.push('!text-red-500');
+            }
+        }
+    }
+
+    // Turbidity colour indicator
+    if (key === 'turbidity') {
+        const turbidityVal = parseFloat(String(value).replace(' NTU', ''));
+        if (!isNaN(turbidityVal)) {
+            if (turbidityVal <= 1) {
+                classes.push('!text-green-500');
+            } else if (turbidityVal <= 5) {
+                classes.push('!text-orange-500');
+            } else {
+                classes.push('!text-red-500');
+            }
+        }
+    }
+
+    // TDS colour indicator
+    if (key === 'tds') {
+        const tdsVal = parseFloat(String(value).replace(' ppm', ''));
+        if (!isNaN(tdsVal)) {
+            if (tdsVal >= 200 && tdsVal <= 400) {
+                classes.push('!text-green-500');
+            } else if (tdsVal >= 0 && tdsVal <= 1200) {
                 classes.push('!text-orange-500');
             } else {
                 classes.push('!text-red-500');
