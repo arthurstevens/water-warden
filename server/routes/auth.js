@@ -26,8 +26,16 @@ router.post('/login', async (req, res) => {
 
         const user = result.rows[0];
 
-        if (!user || !(await bcrypt.compare(password, user.passwordhash))) {
-            return res.status(401).send('Invalid credentials');
+        if (!user) {
+            req.session.messages = { error: 'Invalid username or password.' };
+            return res.redirect('/admin/login');
+        }
+
+        const match = await bcrypt.compare(password, user.passwordhash);
+
+        if (!match) {
+            req.session.messages = { error: 'Invalid username or password.' };
+            return res.redirect('/admin/login');
         }
 
         req.session.user = {
@@ -36,12 +44,13 @@ router.post('/login', async (req, res) => {
             role: user.role,
         };
 
-        res.redirect('/admin');
+        return res.redirect('/admin');
     } catch (err) {
-        console.error(err);
-        res.status(500).send('Server error');
+        console.error('Login error:', err);
+        req.session.messages = { error: 'Server error. Please try again.' };
+        return res.redirect('/admin/login');
     } finally {
-        client.end();
+        await client.end();
     }
 });
 

@@ -4,11 +4,20 @@
     <h1 class="text-3xl font-semibold"><%= login.heading %></h1>
     <p class="text-sm font-normal text-gray-500"><%= login.subtitle %></p>
   </div>
+
   <form method="POST" action="/auth/login" class="flex flex-col gap-3 items-center w-full">
     <div class="flex flex-col gap-3 items-center w-full my-6">
       <input id="username" name="username" type="text" placeholder="Username" class="px-3 h-10 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
       <input id="password" name="password" type="password" placeholder="Password" class="px-3 h-10 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
     </div>
+
+    <%# User messages %>
+    <% if (messages && messages.error) { %>
+      <div class="w-full p-2 bg-red-100 border border-red-300 text-red-700 rounded text-center">
+        <%= messages.error %>
+      </div>
+    <% } %>
+
     <input type="submit" value="Login" class="px-6 h-10 rounded-md text-md text-white bg-blue-600 hover:bg-blue-500 font-bold active:bg-blue-800 transition">
   </form>
 </section>
