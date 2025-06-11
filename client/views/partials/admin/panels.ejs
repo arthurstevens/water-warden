@@ -1,0 +1,54 @@
+<%# Node KPI Cards: displays node counts (total, normal, potential issues, critical) %>
+<section class="w-full mb-6 gap-6 flex flex-col sm:flex-row">
+  <!-- Initialise node -->
+  <section class="flex flex-col p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+    <h1 class="text-2xl font-semibold">Initialise Node</h1>
+    <p class="text-sm font-normal text-gray-500">Begin accepting transmissions from a node</p>
+
+    <form method="POST" action="" class="flex flex-col gap-3 w-full">
+        <div class="flex flex-col gap-2 items-center w-full my-4">
+            <input id="node-name" name="name" type="text" placeholder="Name" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+            <input id="node-token" name="token" type="text" placeholder="Token" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+            <input id="node-latitude" name="latitude" type="number" step="0.00001" placeholder="Latitude (5 d.p.)" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+            <input id="node-longitude" name="longitude" type="number" step="0.00001" placeholder="Longitude (5 d.p.)" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+        <input type="submit" value="Create" class="px-6 h-10 rounded-md text-md text-white bg-blue-600 hover:bg-blue-500 font-bold active:bg-blue-800 transition">
+    </form>
+  </section>
+
+  <%# Delete node %>
+  <section class="flex flex-col p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+    <h1 class="text-2xl font-semibold">Delete Node</h1>
+    <p class="text-sm font-normal text-gray-500">Prevents transmissions and deletes logs</p>
+
+    <form method="POST" action="" class="flex flex-col gap-3 w-full">
+        <div class="flex flex-col gap-2 items-center w-full my-4">
+            <input id="node-id" name="name" type="text" placeholder="Node ID" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+        <input type="submit" value="Delete" class="px-6 h-10 rounded-md text-md text-white bg-red-600 hover:bg-red-500 font-bold active:bg-blue-800 transition">
+    </form>
+  </section>
+
+  <%# Post Announcement %>
+  <section class="flex flex-col p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
+    <h1 class="text-2xl font-semibold">Post Announcement</h1>
+    <p class="text-sm font-normal text-gray-500">Immediately post an alert/announcement</p>
+
+    <form method="POST" action="" class="flex flex-col gap-3 w-full">
+        <div class="flex flex-col gap-2 items-center w-full my-4">
+            <input id="announce-heading" name="heading" type="text" placeholder="Heading" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+            <input id="announce-content" name="content" type="text" placeholder="Content" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+            <input id="announe-severity" name="severity" type="number" step="1" placeholder="Severity" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+            <div class="w-full my-1">
+                <h2 class="text-lg font-semibold">Activity Start</h2>
+                <input id="announce-initial" name="initialTime" type="datetime-local" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+            </div>
+            <div class="w-full my-1">
+                <h2 class="text-lg font-semibold">Activity End</h2>
+                <input id="announce-expiry" name="expiry" type="datetime-local" class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+            </div>
+        </div>
+        <input type="submit" value="Create" class="px-6 h-10 rounded-md text-md text-white bg-blue-600 hover:bg-blue-500 font-bold active:bg-blue-800 transition">
+    </form>
+  </section>
+</section>
