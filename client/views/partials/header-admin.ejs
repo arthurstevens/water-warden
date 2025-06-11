@@ -10,10 +10,21 @@
       </div>
     </div>
 
-    <%# User actions %>
-    <div class="flex items-center gap-2 sm:gap-8">
-      <%# Username %>
-      <%# Logout %>
+  <%# User actions %>
+  <div class="flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-6">
+    <%# Username %>
+    <div class="flex gap-1 text-sm ml-auto">
+      <p class="text-gray-200 hidden sm:inline">Logged in as</p>
+      <p class="text-white font-bold"><%= user.username %></p>
     </div>
+
+    <%# Logout %>
+    <a href="auth/logout" class="relative group flex gap-1 items-center text-sm text-sky-100 font-bold">
+      <img src="assets/logout-icon.svg" alt="Logout icon" class="w-3 h-3">
+      Logout
+      <span class="absolute right-0 -bottom-0.5 h-0.5 bg-sky-100 transition-all duration-300 w-0 group-hover:w-full"></span>
+    </a>
+  </div>
+
   </div>
 </header>
