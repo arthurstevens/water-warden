@@ -6,7 +6,7 @@ router.post('/simulate', async (req, res) => {
     const data = req.body;
 
     // Checking for empty required fields
-    if (!data || !data.nodeid || !data.timestamp || !data.flowrate || !data.pressure || !data.battery) {
+    if (!data || !data.token || !data.timestamp || !data.flowrate || !data.pressure || !data.battery) {
         const emptyFields = Object.keys(data).filter(key => !data[key]);
         if (emptyFields.length > 0) {
             return res.status(400).json({ message: "Missing required fields", emptyFields });
@@ -26,10 +26,12 @@ router.post('/simulate', async (req, res) => {
         await client.connect();
         await client.query(`SET search_path TO "amanzi-warden";`);
 
+        const nodeid = await client.query(`SELECT id FROM node WHERE token = $1`, [data.token]);
+
         query = `INSERT INTO nodeLog (nodeID, timeStamp, flowRate, pressure, battery, temperature, turbidity, totalDissolvedSolids) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`;
 
         await client.query(query, [
-            data.nodeid,
+            nodeid,
             new Date(data.timestamp),
             data.flowrate,
             data.pressure,
@@ -99,12 +101,14 @@ router.get('/read', async (req, res) => {
         await client.connect();
         await client.query(`SET search_path TO "amanzi-warden";`);
 
+        const nodeid = await client.query(`SELECT id FROM node WHERE token = $1`, [data.token]);
+
         const result = await client.query(`SELECT * FROM latestNodeView ORDER BY nodeID;`);
         
         const critical = [0,0]; // Assigning hard-coded positions for nodeID and severity for ease of interpretation
 
         const formatted = result.rows.map(row => {
-            critical[0] = row.nodeid;
+            critical[0] = nodeid;
             if (!(row.temperature) || !(row.turbidity) || !(row.tds)) { // Node that doesn't report all fields
                 if (row.battery < 30) {
                     critical.push(`Battery: ${row.battery}`);
@@ -154,7 +158,7 @@ router.get('/read', async (req, res) => {
                     };
                 }
             } else { // Node that reports all fields
-                critical[0] = row.nodeid;
+                critical[0] = nodeid;
                 if (row.battery < 30) {
                     critical.push(`Battery: ${row.battery}`);
                     critical[1] = 2;

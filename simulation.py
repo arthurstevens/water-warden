@@ -8,7 +8,7 @@ import requests
 while True:
     if random.randint(1,2) == 1:
         data = {
-            "nodeid": random.randint(1,1),
+            "token": 'xyz789abc123',
             "timestamp": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
             "flowrate": random.randint(10,20),
             "pressure": round(random.uniform(1,10),2),
@@ -19,7 +19,7 @@ while True:
         }
     else:
         data = {
-            "nodeid": random.randint(2,2),
+            "token": '123abc789xyz',
             "timestamp": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
             "flowrate": random.randint(10,20),
             "pressure": round(random.uniform(1,10),2),
