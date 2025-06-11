@@ -2,6 +2,15 @@
 <section class="flex flex-col mb-6 p-6 w-full bg-white border-solid border-2 border-gray-300 rounded-lg shadow-sm">
   <h1 class="text-2xl font-semibold">Node Status</h1>
   <p class="text-sm font-normal text-gray-500">Real-time monitoring of water flow sensors</p>
+
+  <%# Column explanations %>
+  <details class="mt-2 text-sm">
+    <summary class="font-medium text-blue-600 cursor-pointer hover:underline">What do these values mean?</summary>
+    <div class="w-full overflow-x-auto overflow-y-auto max-h-[400px] rounded-lg border border-gray-300 border-solid mt-7 mb-4">
+      <%- include('column-explanations') %>
+    </div>
+  </details>
+
   <section class="w-full overflow-x-auto overflow-y-auto max-h-[400px] rounded-lg mt-7 mb-4">
     <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
       <%# Headers populated by client-side JS %>

@@ -1,0 +1,66 @@
+<%# Column explanations table: table of readings, their meanings, and ranges being used %>
+<table class="w-full text-sm text-left text-gray-700 border-collapse">
+  <thead class="text-gray-600 font-semibold bg-gray-300">
+    <tr>
+      <th class="border border-gray-300 px-3 py-2">Column</th>
+      <th class="border border-gray-300 px-3 py-2 min-w-[150px]">Description</th>
+      <th class="border border-gray-300 px-3 py-2 min-w-[150px] text-green-600">Normal</th>
+      <th class="border border-gray-300 px-3 py-2 min-w-[150px] text-orange-500">Warning</th>
+      <th class="border border-gray-300 px-3 py-2 min-w-[150px] text-red-600">Critical</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="hover:bg-gray-200">
+      <td class="border border-gray-300 px-3 py-2 font-medium">Status</td>
+      <td class="border border-gray-300 px-3 py-2">Overall health of the node based on sensor readings</td>
+      <td class="border border-gray-300 px-3 py-2">1 – Normal</td>
+      <td class="border border-gray-300 px-3 py-2">2 – Potential Issues</td>
+      <td class="border border-gray-300 px-3 py-2">3 – Critical</td>
+    </tr>
+    <tr class="hover:bg-gray-200">
+      <td class="border border-gray-300 px-3 py-2 font-medium">Flow Rate</td>
+      <td class="border border-gray-300 px-3 py-2">Amount of water passing through the sensor (litres per minute)</td>
+      <td class="border border-gray-300 px-3 py-2" colspan="3">No defined threshold; spikes may indicate leaks</td>
+    </tr>
+    <tr class="hover:bg-gray-200">
+      <td class="border border-gray-300 px-3 py-2 font-medium">Pressure</td>
+      <td class="border border-gray-300 px-3 py-2">Water pressure measured in bar</td>
+      <td class="border border-gray-300 px-3 py-2">3–6 bar</td>
+      <td class="border border-gray-300 px-3 py-2">2–3 or 6–9 bar</td>
+      <td class="border border-gray-300 px-3 py-2">&lt;2 or &gt;9 bar</td>
+    </tr>
+    <tr class="hover:bg-gray-200">
+      <td class="border border-gray-300 px-3 py-2 font-medium">Battery</td>
+      <td class="border border-gray-300 px-3 py-2">Remaining battery level of the sensor node (percent)</td>
+      <td class="border border-gray-300 px-3 py-2">≥60%</td>
+      <td class="border border-gray-300 px-3 py-2">30–59%</td>
+      <td class="border border-gray-300 px-3 py-2">&lt;30%</td>
+    </tr>
+    <tr class="hover:bg-gray-200">
+      <td class="border border-gray-300 px-3 py-2 font-medium">Temperature</td>
+      <td class="border border-gray-300 px-3 py-2">Water temperature in degrees Celsius (°C)</td>
+      <td class="border border-gray-300 px-3 py-2">15–25°C</td>
+      <td class="border border-gray-300 px-3 py-2">0–15°C or 25–30°C</td>
+      <td class="border border-gray-300 px-3 py-2">&lt;0°C or &gt;30°C</td>
+    </tr>
+    <tr class="hover:bg-gray-200">
+      <td class="border border-gray-300 px-3 py-2 font-medium">Turbidity</td>
+      <td class="border border-gray-300 px-3 py-2">Water clarity measured in NTU (higher = cloudier)</td>
+      <td class="border border-gray-300 px-3 py-2">≤1 NTU</td>
+      <td class="border border-gray-300 px-3 py-2">1–5 NTU</td>
+      <td class="border border-gray-300 px-3 py-2">&gt;5 NTU</td>
+    </tr>
+    <tr class="hover:bg-gray-200">
+      <td class="border border-gray-300 px-3 py-2 font-medium">TDS</td>
+      <td class="border border-gray-300 px-3 py-2">Total dissolved solids in water, measured in ppm</td>
+      <td class="border border-gray-300 px-3 py-2">200–400 ppm</td>
+      <td class="border border-gray-300 px-3 py-2">0–200 ppm or 400–1200 ppm</td>
+      <td class="border border-gray-300 px-3 py-2">&gt;1200 ppm</td>
+    </tr>
+    <tr class="hover:bg-gray-200">
+      <td class="border border-gray-300 px-3 py-2 font-medium">Timestamp</td>
+      <td class="border border-gray-300 px-3 py-2">Time the reading was taken</td>
+      <td class="border border-gray-300 px-3 py-2" colspan="3">N/A</td>
+    </tr>
+  </tbody>
+</table>
