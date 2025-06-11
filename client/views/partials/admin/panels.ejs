@@ -8,7 +8,7 @@
     <form method="POST" action="admin/init-node" class="flex flex-col gap-3 w-full">
       <div class="flex flex-col gap-2 items-center w-full my-4">
         <input id="node-name" name="name" type="text" placeholder="Name" maxlength="255" required class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
-        <input id="node-token" name="token" type="text" placeholder="Token" maxlength="255" required class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        <input id="node-token" name="token" type="text" placeholder="Token" maxlength="64" required class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
         <input id="node-latitude" name="latitude" type="number" step="0.00001" min="-90" max="90" placeholder="Latitude (5 d.p.)" required class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
         <input id="node-longitude" name="longitude" type="number" step="0.00001" min="-180" max="180" placeholder="Longitude (5 d.p.)" required class="px-3 h-9 border-2 border-gray-300 rounded-md text-md font-medium w-full hover:border-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
       </div>
