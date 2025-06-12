@@ -40,7 +40,7 @@ def postNodeData(data):
         data=json.dumps(data)
     )
 
-    print(f"Response: {response.status_code} {response.text}")
+    return (f"Response: {response.status_code} {response.text}")
 
 def updateNode(node):
     DELTAS = {
@@ -82,6 +82,8 @@ def main():
     nodes = []
 
     for i in range(NODES_TO_GENERATE):
+        print (f'Generating node {i}', end="\r")
+
         name = f'Example Node {i + 1}'
         token = secrets.token_hex(16)
         latitude = round(random.uniform(-26.20500, -26.19000), 5)
@@ -146,10 +148,15 @@ def main():
 
         nodes.append(node)
 
+    print(f'Generated {len(nodes)} nodes.\n')
+
     while True:
+        i = 1
         for node in nodes:
             node = updateNode(node)
-            postNodeData(node['data'])
+            print(f"Node {i}: {postNodeData(node['data'])}")
+            i += 1
+        print("=" * 10 + " BATCH COMPLETE " + "=" * 10)
         time.sleep(NODE_INTERVAL)
 
 if __name__ == "__main__":
