@@ -1,5 +1,8 @@
 # Water Warden
 
+> Formally '***Amanzi Warden***', a prototype solution built based on (not for) issues outlined in the **Engineering For People Design Challenege 2024-2025**. 
+<br>Nominally, targets issues of the plumbing system with high levels of untraced water loss and hijacking, contributing to droughts.
+
 A prototype web application for monitoring and managing plumbing infrastructure. Simulates how administrators could track node activity, sensor readings, and network health in a scalable, real-world irrigation system.
 
 ---
@@ -70,6 +73,14 @@ A prototype web application for monitoring and managing plumbing infrastructure.
 
 </details>
 
+<details>
+<summary>Example Alert</summary>
+  
+![Screenshot 2025-06-15 at 15-29-19 Water Warden](https://github.com/user-attachments/assets/41afe51e-23d2-4fbf-ba52-36e9e57586ac)
+
+
+</details>
+
 ---
 
 ## Setup & Running Locally
@@ -115,3 +126,19 @@ py scripts/simulate_nodes.py
 ```
 
 > Make sure server is running before executing this script (RESTful endpoint must be active to receive data)
+
+---
+
+# To-do
+
+## Major
+
+- Implement leak detection using flow rate and node adjacency list.
+
+## Minor
+
+- Null
+
+## Bug Tracking
+
+- Null
