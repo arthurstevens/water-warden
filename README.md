@@ -1,7 +1,8 @@
 # Water Warden
 
 > Formerly '***Amanzi Warden***', a prototype solution built based on (not for) issues outlined in the **Engineering For People Design Challenege 2024-2025**. 
-<br>Nominally, targets issues of the plumbing system with high levels of untraced water loss and hijacking, contributing to droughts.
+> <br><br>
+> Nominally, targets issues of the plumbing system with high levels of untraced water loss and hijacking, contributing to droughts.
 
 A prototype web application for monitoring and managing plumbing infrastructure. Simulates how administrators could track node activity, sensor readings, and network health in a scalable, real-world irrigation system.
 
@@ -27,7 +28,7 @@ A prototype web application for monitoring and managing plumbing infrastructure.
 - **Responsive UI**  
   Built using EJS templating and Tailwind CSS for clean, adaptive design
 
-- **Data Cache**
+- **Data Cache**  
   Node data and alerts are held in local storage until they can be updated again
 
 ---
@@ -114,7 +115,7 @@ psql -U <db_username> -d <db_name> -f init/schema.sql
 ```
 
 > Replace `<db_username>` and `<db_name>` as desired.
-
+> <br>
 > Configure & run `scripts/gen-user-sql.js` to generate SQL statements for user (admin) accounts.
 
 ### Simulating Nodes
@@ -125,7 +126,7 @@ Open and configure scripts/simulate_nodes.py as desired, and then run:
 py scripts/simulate_nodes.py
 ```
 
-> Make sure server is running before executing this script (RESTful endpoint must be active to receive data)
+> Make sure server is running before executing this script (RESTful endpoint must be active to receive data).
 
 ---
 
@@ -134,6 +135,7 @@ py scripts/simulate_nodes.py
 ## Major
 
 - Implement leak detection using flow rate and node adjacency list.
+- Integrate node health alerts into admin panel.
 
 ## Minor
 
