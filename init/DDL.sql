@@ -1,12 +1,12 @@
 -- ============================================================================
--- Project Name : Amanzi Warden
+-- Project Name : Water Warden
 -- File Name    : DDL.sql
 -- Description  : Defines the database schema in entirety. Comprised of tables 
 --				  and their constraints, functions, triggers, views, and 
 --				  indexes.
 --                Additionally contains some seed data at the base.
 -- Created On   : 2025-06-04
--- Last Altered : 2025-06-10
+-- Last Altered : 2025-06-15
 -- NOTE         : N/A
 -- ============================================================================
 
@@ -15,10 +15,8 @@
 -- SCHEMA DEFINITION
 -- ============================================================================
 
-DROP SCHEMA IF EXISTS "amanzi-warden" CASCADE;
-
-CREATE SCHEMA IF NOT EXISTS "amanzi-warden";
-SET search_path TO "amanzi-warden";
+CREATE SCHEMA IF NOT EXISTS "water-warden";
+SET search_path TO "water-warden";
 
 DROP TABLE IF EXISTS node CASCADE;
 DROP TABLE IF EXISTS nodeLog CASCADE;

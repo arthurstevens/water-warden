@@ -28,7 +28,7 @@ app.use((req, res, next) => {
     res.locals.footer = {
         text: 'All rights reserved.',
         email: 'someone@example.com',
-        emailText: 'Amanzi Warden',
+        emailText: 'Water Warden',
         year: new Date().getFullYear(),
     };
     next();
