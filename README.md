@@ -78,8 +78,8 @@ A prototype web application for monitoring and managing plumbing infrastructure.
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/arthurstevens/water-ward.git
-cd water-ward
+git clone https://github.com/arthurstevens/water-warden.git
+cd water-warden
 
 # 2. Install dependencies
 npm install
