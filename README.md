@@ -74,7 +74,7 @@ A prototype web application for monitoring and managing plumbing infrastructure.
 </details>
 
 <details>
-<summary>Example Alert</summary>
+<summary>Node Readings Summary</summary>
   
 ![Screenshot 2025-06-15 at 15-29-19 Water Warden](https://github.com/user-attachments/assets/41afe51e-23d2-4fbf-ba52-36e9e57586ac)
 
