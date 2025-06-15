@@ -1,0 +1,20 @@
+{
+  "name": "water-warden",
+  "version": "1.0.0",
+  "description": "A protyping project for an irrigation monitoring system.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "pg": "^8.16.0"
+  }
+}
