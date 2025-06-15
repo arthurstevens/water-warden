@@ -22,7 +22,7 @@ router.get('/', requireAdmin, (req, res) => {
         title: 'Admin Dashboard',
         header: {
             title: 'Admin Panel',
-            subtitle: 'Amanzi Warden'
+            subtitle: 'Water Warden'
         }
     });
 });
@@ -30,7 +30,7 @@ router.get('/', requireAdmin, (req, res) => {
 // Admin login page
 router.get('/login', (req, res) => {
     res.render('pages/admin/login', {
-        title: 'Amanzi Warden',
+        title: 'Water Warden',
         login: {
             heading: 'Admin Login',
             subtitle: 'Usage limited to service administrators.'
@@ -58,7 +58,7 @@ router.post('/init-node', requireAdmin, async (req, res) => {
 
     try {
         await client.connect();
-        await client.query(`SET search_path TO "amanzi-warden";`);
+        await client.query(`SET search_path TO "${process.env.DB_SCHEMA}";`);
 
         await client.query(
             `INSERT INTO node (name, token, latitude, longitude) VALUES ($1, $2, $3, $4)`,
@@ -102,7 +102,7 @@ router.post('/delete-node', requireAdmin, async (req, res) => {
 
     try {
         await client.connect();
-        await client.query(`SET search_path TO "amanzi-warden";`);
+        await client.query(`SET search_path TO "${process.env.DB_SCHEMA}";`);
 
         const result = await client.query(
             `DELETE FROM node WHERE id = $1`,
@@ -145,7 +145,7 @@ router.post('/post-announcement', requireAdmin, async (req, res) => {
 
     try {
         await client.connect();
-        await client.query(`SET search_path TO "amanzi-warden";`);
+        await client.query(`SET search_path TO "${process.env.DB_SCHEMA}";`);
 
         await client.query(
             `INSERT INTO announcement (heading, content, userID, initialTime, expiry, severity)

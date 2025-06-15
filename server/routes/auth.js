@@ -17,7 +17,7 @@ router.post('/login', async (req, res) => {
 
     try {
         await client.connect();
-        await client.query(`SET search_path TO "amanzi-warden";`);
+        await client.query(`SET search_path TO "${process.env.DB_SCHEMA}";`);
 
         const result = await client.query(
             'SELECT * FROM users WHERE username = $1 LIMIT 1;',

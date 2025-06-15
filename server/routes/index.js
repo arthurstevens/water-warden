@@ -3,9 +3,9 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
     res.render('pages/index', {
-        title: 'Amanzi Warden',
+        title: 'Water Warden',
         header: {
-            title: 'Amanzi Warden',
+            title: 'Water Warden',
             subtitle: 'Smart Water Monitoring System'
         }
     });
