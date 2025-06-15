@@ -1,6 +1,6 @@
 # Water Warden
 
-> Formally '***Amanzi Warden***', a prototype solution built based on (not for) issues outlined in the **Engineering For People Design Challenege 2024-2025**. 
+> Formerly '***Amanzi Warden***', a prototype solution built based on (not for) issues outlined in the **Engineering For People Design Challenege 2024-2025**. 
 <br>Nominally, targets issues of the plumbing system with high levels of untraced water loss and hijacking, contributing to droughts.
 
 A prototype web application for monitoring and managing plumbing infrastructure. Simulates how administrators could track node activity, sensor readings, and network health in a scalable, real-world irrigation system.
