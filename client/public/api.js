@@ -1,9 +1,9 @@
-// Fetching data from the server
-
+// Fetches data from the server
 export async function fetchNodeData(signal) {
     // Simulate a network delay
     await new Promise((resolve, reject) => {
-        const timeout = setTimeout(resolve, 500);
+        //const timeout = setTimeout(resolve, 5_000); // Forced timeout
+        const timeout = setTimeout(resolve, 500); // Normal
 
         signal.addEventListener('abort', () => {
             clearTimeout(timeout);
