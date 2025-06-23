@@ -5,7 +5,7 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Session
+// Session authentication
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -17,6 +17,7 @@ app.use(session({
     }
 }));
 
+// Set session information and message data
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
     res.locals.messages = req.session.messages || null;
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
     next();
 });
 
+// Footer data available on all pages
 app.use((req, res, next) => {
     res.locals.footer = {
         text: 'All rights reserved.',

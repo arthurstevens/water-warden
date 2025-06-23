@@ -1,5 +1,6 @@
 // Visual utility for the admin panel
 document.addEventListener('DOMContentLoaded', () => {
+	// Populate date/time for announcements
     const initial = document.getElementById('announce-initial');
     const expiry = document.getElementById('announce-expiry');
 

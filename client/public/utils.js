@@ -55,7 +55,7 @@ export function formatTime(date) {
     return `${hours}h ago`;
 }
 
-// 
+// Sets a string To Title Case and returns it
 export function toTitleCase(str) {
   return str
     .replace(/([a-z])([A-Z])/g, '$1 $2')
@@ -65,6 +65,7 @@ export function toTitleCase(str) {
     .join(' ');
 }
 
+// Return date/time as DYYYY-MM-DD-THH-MM-SS
 function getDateText() {
     const current = new Date;
 
@@ -75,5 +76,5 @@ function getDateText() {
     const minute = String(current.getMinutes()).padStart(2, '0');
     const second = String(current.getSeconds()).padStart(2, '0');
 
-    return `${year}-${month}-${day}-${hour}-${minute}-${second}`
+    return `D${year}-${month}-${day}-T${hour}-${minute}-${second}`
 }

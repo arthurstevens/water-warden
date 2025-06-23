@@ -8,11 +8,18 @@ import secrets
 import os
 import dotenv
 
+'''
+Used for simulating nodes
+- Creates nodes
+- Sends dynamic data to server
+'''
+
 dotenv.load_dotenv()
 
 NODES_TO_GENERATE = 50
 NODE_INTERVAL = 5
 
+# Creates a node with provided data, returns its ID
 def createNode(name, token, longitude, latitude):
     conn = psycopg2.connect(
         host=os.getenv("PG_HOST"),
@@ -23,7 +30,7 @@ def createNode(name, token, longitude, latitude):
 
     with conn:
         with conn.cursor() as cur:
-            cur.execute('SET search_path TO "amanzi-warden";')
+            cur.execute('SET search_path TO "water-warden";')
             cur.execute(
                 'INSERT INTO node (name, token, latitude, longitude) VALUES (%s, %s, %s, %s) RETURNING id',
                 (name, token, latitude, longitude)
@@ -33,6 +40,7 @@ def createNode(name, token, longitude, latitude):
     conn.close()
     return node_id
 
+# Sends simulated readings to server, returns response message
 def postNodeData(data):
     response = requests.post(
         "http://localhost:3000/api/node-readings",
@@ -42,6 +50,7 @@ def postNodeData(data):
 
     return (f"Response: {response.status_code} {response.text}")
 
+# Simulate variation of a node's data, returns updated data
 def updateNode(node):
     DELTAS = {
         "flowrate": 1.2,
@@ -81,6 +90,7 @@ def updateNode(node):
 def main():
     nodes = []
 
+    # Generate nodes
     for i in range(NODES_TO_GENERATE):
         print (f'Generating node {i}', end="\r")
 
@@ -150,6 +160,7 @@ def main():
 
     print(f'Generated {len(nodes)} nodes.\n')
 
+    # Simulate nodes
     while True:
         i = 1
         for node in nodes:

@@ -26,18 +26,21 @@ router.post('/login', async (req, res) => {
 
         const user = result.rows[0];
 
+        // No data found for given username
         if (!user) {
             req.session.messages = { error: 'Invalid username or password.' };
             return res.redirect('/admin/login');
         }
 
+        // Check hashes match
         const match = await bcrypt.compare(password, user.passwordhash);
 
         if (!match) {
             req.session.messages = { error: 'Invalid username or password.' };
             return res.redirect('/admin/login');
         }
-
+		
+        // If hashes match, create a user session
         req.session.user = {
             id: user.id,
             username: user.username,
@@ -54,6 +57,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Logout destorys session
 router.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {

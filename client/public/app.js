@@ -46,6 +46,7 @@ async function updateDashboard() {
         updateTableContent(nodeData.nodes, nodeFilter);
         updateAlertContent(nodeData.alerts)
         
+        // Set column filters for the first time data is fetched
         if (firstFetch && nodeData.nodes.length != 0) {
             setTableFilterColumns(nodeData.nodes);
             firstFetch = false;
@@ -86,6 +87,7 @@ function updateLastUpdated() {
     updateLastUpdatedContent(displayText);
 }
 
+// Collect node data and alerts from cache, loading them into DOM
 function restoreFromCache() {
     const cached = localStorage.getItem(CACHE_KEY);
     const timestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
@@ -100,6 +102,13 @@ function restoreFromCache() {
         updateKPIContent(data.nodes);
         updateTableContent(data.nodes);
         updateAlertContent(data.alerts);
+		
+		// Check if data can populate column filter
+        if (firstFetch && data.nodes.length != 0) {
+            setTableFilterColumns(data.nodes);
+            firstFetch = false;
+        }
+
         lastUpdate = new Date(timestamp);
         console.info('Loaded dashboard from cache.');
     }

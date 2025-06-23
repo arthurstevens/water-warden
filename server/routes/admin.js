@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Client } = require('pg');
 
+// Middleware checking session cookie on administrative actions
 function requireAdmin(req, res, next) {
     if (req.session && req.session.user && req.session.user.role) {
         if (req.session.user.role === 'admin') {
